@@ -9,13 +9,13 @@
 	"author": "Enzo Innocenzi <enzo@innocenzi.dev>",
 	"license": "MIT",
 	"funding": "https://github.com/sponsors/innocenzi",
-	"homepage": "https://github.com/innocenzi/vscode-hybridly#readme",
+	"homepage": "https://github.com/hybridly/vscode#readme",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/innocenzi/vscode-hybridly"
+		"url": "https://github.com/hybridly/vscode"
 	},
 	"bugs": {
-		"url": "https://github.com/innocenzi/vscode-hybridly/issues"
+		"url": "https://github.com/hybridly/vscode/issues"
 	},
 	"sponsor": {
 		"url": "https://github.com/sponsors/innocenzi"
