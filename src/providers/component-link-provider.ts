@@ -9,9 +9,9 @@ import { LocatedPattern, locateInDocument } from '../utils/locate-in-document'
 export class ComponentLinkProvider implements DocumentLinkProvider {
 	provideDocumentLinks(document: TextDocument): ProviderResult<DocumentLink[]> {
 		// https://regex101.com/r/7PbMO2/1
-		const hybridly = /hybridly\(\s*([\'"])(?<component>.+)(\1)\s*[\),]/gm
+		const hybridly = /hybridly\(\s*([\'"])(?<component>.+)(\1)\s*[\),]/gmd
 		// https://regex101.com/r/9yvy9C/1
-		const hybridlyView = /hybridly\(\)->view\(\s*([\'"])(?<component>.+)(\1)\s*[\),]/gm
+		const hybridlyView = /hybridly\(\)->view\(\s*([\'"])(?<component>.+)(\1)\s*[\),]/gmd
 
 		const components = [
 			...locateInDocument(hybridly, 'component', document),

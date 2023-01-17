@@ -10,7 +10,7 @@ import { LocatedPattern, locateInDocument } from '../utils/locate-in-document'
 export class RouteLinkProvider implements DocumentLinkProvider {
 	provideDocumentLinks(document: TextDocument): ProviderResult<DocumentLink[]> {
 		// https://regex101.com/r/cfX43R/1
-		const route = /route\(\s*([\'"])(?<route>.+)(\1)\s*[\),]/gm
+		const route = /route\(\s*([\'"])(?<route>.+)(\1)\s*[\),]/gmd
 
 		const components = [
 			...locateInDocument(route, 'route', document),

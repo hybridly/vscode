@@ -9,9 +9,9 @@ import { LocatedPattern, locateInDocument } from '../utils/locate-in-document'
 export class LayoutLinkProvider implements DocumentLinkProvider {
 	provideDocumentLinks(document: TextDocument): ProviderResult<DocumentLink[]> {
 		// https://regex101.com/r/UdrLZo/1
-		const layoutWithArgument = /<template\s*layout=\s*([\'"])(?<layout>.+)(\1)\s*[>]/gm
+		const layoutWithArgument = /<template\s*layout=\s*([\'"])(?<layout>.+)(\1)\s*[>]/gmd
 		// https://regex101.com/r/0aVnrx/2
-		const layoutWithoutArgument = /<template\s*(?<layout>layout)\s*[>]/gm
+		const layoutWithoutArgument = /<template\s*(?<layout>layout)\s*[>]/gmd
 
 		const components = [
 			...locateInDocument(layoutWithArgument, 'layout', document),
