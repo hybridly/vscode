@@ -4,18 +4,24 @@ import { DocumentLink, DocumentLinkProvider, ProviderResult, TextDocument, Uri, 
 import { LocatedPattern, locateInDocument } from '../utils/locate-in-document'
 import { log } from '../utils/log'
 import { actionToLink } from '../utils/psr4'
+import { escapeRegExp } from '../utils/regexp'
 
 /**
 * Adds hyperlinks to `route()` calls.
 */
 export class RouteLinkProvider implements DocumentLinkProvider {
 	provideDocumentLinks(document: TextDocument): ProviderResult<DocumentLink[]> {
-		// https://regex101.com/r/cfX43R/1
-		const route = /route\(\s*([\'"])(?<route>.+)(\1)\s*[\),]/gmd
-
-		const components = [
-			...locateInDocument(route, 'route', document),
+		const methods = [
+			'route',
+			...workspace.getConfiguration('hybridly').get<string[]>('routeMethods', []),
 		]
+
+		// https://regex101.com/r/cfX43R/1
+		const links = methods.flatMap((method) => locateInDocument(
+			new RegExp(`${escapeRegExp(method)}\\(\\s*([\\'"])(?<route>.+)(\\1)\\s*[\\),]`, 'gmd'),
+			'route',
+			document,
+		))
 
 		const workspaceUri = workspace.getWorkspaceFolder(document.uri)?.uri
 
@@ -43,7 +49,7 @@ export class RouteLinkProvider implements DocumentLinkProvider {
 			return actionToLink(workspaceUri!, route!.action)?.uri
 		}
 
-		return components
+		return links
 			.filter((component) => getControllerUri(component))
 			.map((component) => ({
 				target: getControllerUri(component),

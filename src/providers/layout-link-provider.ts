@@ -13,7 +13,7 @@ export class LayoutLinkProvider implements DocumentLinkProvider {
 		// https://regex101.com/r/0aVnrx/2
 		const layoutWithoutArgument = /<template\s*(?<layout>layout)\s*[>]/gmd
 
-		const components = [
+		const links = [
 			...locateInDocument(layoutWithArgument, 'layout', document),
 			...locateInDocument(layoutWithoutArgument, 'layout', document),
 		].flatMap((component) => {
@@ -51,7 +51,7 @@ export class LayoutLinkProvider implements DocumentLinkProvider {
 			return Uri.joinPath(workspaceURI, `${`resources.views.layouts.${component.value}`.replaceAll('.', '/')}.vue`)
 		}
 
-		return components
+		return links
 			.filter((component) => fs.existsSync(getComponentUri(component).fsPath))
 			.map((component) => ({
 				target: getComponentUri(component),

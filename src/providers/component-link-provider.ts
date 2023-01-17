@@ -2,21 +2,27 @@
 import fs from 'node:fs'
 import { DocumentLink, DocumentLinkProvider, ProviderResult, TextDocument, Uri, workspace } from 'vscode'
 import { LocatedPattern, locateInDocument } from '../utils/locate-in-document'
+import { escapeRegExp } from '../utils/regexp'
 
 /**
 * Adds hyperlinks to `hybridly()` and `hybridly()->view()` calls.
 */
 export class ComponentLinkProvider implements DocumentLinkProvider {
 	provideDocumentLinks(document: TextDocument): ProviderResult<DocumentLink[]> {
-		// https://regex101.com/r/7PbMO2/1
-		const hybridly = /hybridly\(\s*([\'"])(?<component>.+)(\1)\s*[\),]/gmd
-		// https://regex101.com/r/9yvy9C/1
-		const hybridlyView = /hybridly\(\)->view\(\s*([\'"])(?<component>.+)(\1)\s*[\),]/gmd
-
-		const components = [
-			...locateInDocument(hybridly, 'component', document),
-			...locateInDocument(hybridlyView, 'component', document),
+		const methods = [
+			'hybridly',
+			'hybridly()->view',
+			'assertHybridView',
+			...workspace.getConfiguration('hybridly').get<string[]>('componentMethods', []),
 		]
+
+		// https://regex101.com/r/7PbMO2/1
+		// https://regex101.com/r/9yvy9C/1
+		const links = methods.flatMap((method) => locateInDocument(
+			new RegExp(`${escapeRegExp(method)}\\(\\s*([\\'"])(?<component>.+)(\\1)\s*[\\),]`, 'gmd'),
+			'component',
+			document,
+		))
 
 		const workspaceURI = workspace.getWorkspaceFolder(document.uri)?.uri
 
@@ -34,7 +40,7 @@ export class ComponentLinkProvider implements DocumentLinkProvider {
 			return Uri.joinPath(workspaceURI, `${`resources.views.pages.${component.value}`.replaceAll('.', '/')}.vue`)
 		}
 
-		return components
+		return links
 			.filter((component) => fs.existsSync(getComponentUri(component).fsPath))
 			.map((component) => ({
 				target: getComponentUri(component),
