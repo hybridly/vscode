@@ -1,7 +1,7 @@
 <br>
 
 <p align="center">
-  <img src="https://github.com/hybridly/hybridly/raw/0.x/.github/assets/logo-shadow.svg" style="width:125px;" />
+  <img src="https://github.com/hybridly/hybridly/raw/0.x/.github/assets/logo-shadow.png" style="width:125px;" />
 </p>
 
 <h1 align="center">Code extension for Hybridly</h1>
@@ -19,7 +19,7 @@
   <br />
   <br />
   <a href="https://raw.githubusercontent.com/innocenzi/static/main/sponsorkit/sponsors.svg">
-    <img src="https://raw.githubusercontent.com/innocenzi/static/main/sponsorkit/sponsors.svg"/>
+    <img src="https://raw.githubusercontent.com/innocenzi/static/main/sponsorkit/sponsors.png"/>
   </a>
   <br />
   <br />
