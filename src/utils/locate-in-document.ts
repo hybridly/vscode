@@ -1,6 +1,6 @@
 import { Range, TextDocument } from 'vscode'
 
-type LocatedPattern = { value: string; range: Range }
+export type LocatedPattern = { value: string; range: Range }
 
 type RegExpExecArrayWithIndices = RegExpExecArray & {
 	indices?: [number, number] & {

@@ -1,17 +1,16 @@
 /* eslint-disable prefer-regex-literals */
+import fs from 'node:fs'
 import { DocumentLink, DocumentLinkProvider, ProviderResult, TextDocument, Uri, workspace } from 'vscode'
-import { locateInDocument } from '../utils/locate-in-document'
+import { LocatedPattern, locateInDocument } from '../utils/locate-in-document'
 
 /**
-* Inertia Component Link Provider
-*
-* This definition provider adds hyperlinks to component names when using
-* Route::inertia() and Inertia::render method calls.
+* Adds hyperlinks to `hybridly()` and `hybridly()->view()` calls.
 */
 export class ComponentLinkProvider implements DocumentLinkProvider {
 	provideDocumentLinks(document: TextDocument): ProviderResult<DocumentLink[]> {
-		// https://regex101.com/r/ohd4WC/1
+		// https://regex101.com/r/7PbMO2/1
 		const hybridly = /hybridly\(\s*([\'"])(?<component>.+)(\1)\s*[\),]/gm
+		// https://regex101.com/r/9yvy9C/1
 		const hybridlyView = /hybridly\(\)->view\(\s*([\'"])(?<component>.+)(\1)\s*[\),]/gm
 
 		const components = [
@@ -20,23 +19,26 @@ export class ComponentLinkProvider implements DocumentLinkProvider {
 		]
 
 		const workspaceURI = workspace.getWorkspaceFolder(document.uri)?.uri
+
 		if (!workspaceURI) {
 			return []
 		}
 
-		const pagesFolder = workspace
-			.getConfiguration('hybridly')
-			.get('pages', 'resources/views/pages')
+		// TODO: keep configuration DRY hybridly.config.ts
+		const getComponentUri = (component: LocatedPattern): Uri => {
+			if (component.value.includes(':')) {
+				const [domain, page] = component.value.split(':')
+				return Uri.joinPath(workspaceURI, `${`resources.domains.${domain}.pages.${page}`.replaceAll('.', '/')}.vue`)
+			}
 
-		return components.map((component) => {
-			return {
-				target: Uri.joinPath(
-					workspaceURI,
-					pagesFolder,
-					`${component.value.replace('.', '/')}.vue`,
-				),
+			return Uri.joinPath(workspaceURI, `${`resources.views.pages.${component.value}`.replaceAll('.', '/')}.vue`)
+		}
+
+		return components
+			.filter((component) => fs.existsSync(getComponentUri(component).fsPath))
+			.map((component) => ({
+				target: getComponentUri(component),
 				range: component.range,
-			} as DocumentLink
-		})
+			}))
 	}
 }
