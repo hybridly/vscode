@@ -3,6 +3,7 @@ import fs from 'node:fs'
 import { ExtensionContext, languages, workspace } from 'vscode'
 import { version } from '../package.json'
 import { ComponentLinkProvider } from './providers/component-link-provider'
+import { LayoutLinkProvider } from './providers/layout-link-provider'
 import { RouteLinkProvider } from './providers/route-link-provider'
 import { log } from './utils/log'
 
@@ -37,6 +38,11 @@ export async function activate(context: ExtensionContext) {
 	context.subscriptions.push(languages.registerDocumentLinkProvider(
 		{ scheme: 'file', language: 'php', pattern: '**/*.php' },
 		new ComponentLinkProvider(),
+	))
+
+	context.subscriptions.push(languages.registerDocumentLinkProvider(
+		{ scheme: 'file', language: 'vue', pattern: '**/*.vue' },
+		new LayoutLinkProvider(),
 	))
 
 	context.subscriptions.push(languages.registerDocumentLinkProvider(
