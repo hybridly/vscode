@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 
 jobs:
   release:
@@ -17,6 +17,6 @@ jobs:
         with:
           node-version: 16.x
 
-      - run: npx changelogithub
+      - run: npx conventional-github-releaser -p angular
         env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          CONVENTIONAL_GITHUB_RELEASER_TOKEN: ${{secrets.GITHUB_TOKEN}}
