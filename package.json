@@ -15,14 +15,14 @@
 		"laravel",
 		"vite"
 	],
-	"author": "Enzo Innocenzi <enzo@innocenzi.dev>",
 	"license": "MIT",
-	"funding": "https://github.com/sponsors/innocenzi",
-	"homepage": "https://github.com/hybridly/vscode#readme",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/hybridly/vscode"
 	},
+	"funding": "https://github.com/sponsors/innocenzi",
+	"author": "Enzo Innocenzi <enzo@innocenzi.dev>",
+	"homepage": "https://github.com/hybridly/vscode#readme",
 	"bugs": {
 		"url": "https://github.com/hybridly/vscode/issues"
 	},
@@ -32,15 +32,15 @@
 	"categories": [
 		"Other"
 	],
+	"files": [
+		"dist"
+	],
 	"main": "./dist/index.js",
 	"icon": "res/icon.png",
 	"galleryBanner": {
 		"color": "#252525",
 		"theme": "dark"
 	},
-	"files": [
-		"dist"
-	],
 	"engines": {
 		"vscode": "^1.74.0"
 	},
@@ -59,8 +59,8 @@
 		"release": "bumpp && nr publish"
 	},
 	"devDependencies": {
-		"@innocenzi/eslint-config": "^0.14.0",
 		"@antfu/ni": "^0.17.2",
+		"@innocenzi/eslint-config": "^0.14.0",
 		"@types/node": "^18.11.18",
 		"@types/vscode": "^1.74.0",
 		"bumpp": "^8.2.1",
