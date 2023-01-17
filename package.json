@@ -2,7 +2,7 @@
 	"publisher": "innocenzi",
 	"name": "vscode-hybridly",
 	"displayName": "Hybridly",
-	"version": "0.1.3",
+	"version": "0.1.4",
 	"private": true,
 	"preview": true,
 	"packageManager": "pnpm@7.8.0",
@@ -47,23 +47,27 @@
 	"activationEvents": [
 		"onStartupFinished"
 	],
-  "contributes": {
-    "configuration": {
-      "title": "Hybridly",
-      "properties": {
-        "hybridly.componentMethods": {
-          "type": ["string"],
-          "default": [],
-          "description": "Additional methods which first parameter should link to page components."
-        },
-        "hybridly.routeMethods": {
-          "type": ["string"],
-          "default": [],
-          "description": "Additional methods which first parameter correspond to a route name."
-        }
-      }
-    }
-  },
+	"contributes": {
+		"configuration": {
+			"title": "Hybridly",
+			"properties": {
+				"hybridly.componentMethods": {
+					"type": [
+						"string"
+					],
+					"default": [],
+					"description": "Additional methods which first parameter should link to page components."
+				},
+				"hybridly.routeMethods": {
+					"type": [
+						"string"
+					],
+					"default": [],
+					"description": "Additional methods which first parameter correspond to a route name."
+				}
+			}
+		}
+	},
 	"scripts": {
 		"build": "tsup src/index.ts --external vscode",
 		"dev": "nr build --watch",
