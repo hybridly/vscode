@@ -2,12 +2,19 @@
 	"publisher": "innocenzi",
 	"name": "vscode-hybridly",
 	"displayName": "Hybridly",
-	"version": "0.1.0",
+	"version": "0.1.0-alpha.1",
 	"private": true,
 	"preview": true,
 	"packageManager": "pnpm@7.8.0",
 	"description": "Visual Studio Code extension for Hybridly",
-	"keywords": ["hybridly", "inertia", "inertiajs", "vue", "laravel", "vite"],
+	"keywords": [
+		"hybridly",
+		"inertia",
+		"inertiajs",
+		"vue",
+		"laravel",
+		"vite"
+	],
 	"author": "Enzo Innocenzi <enzo@innocenzi.dev>",
 	"license": "MIT",
 	"funding": "https://github.com/sponsors/innocenzi",
@@ -27,10 +34,10 @@
 	],
 	"main": "./dist/index.js",
 	"icon": "res/icon.png",
-  "galleryBanner": {
-    "color": "#252525",
-    "theme": "dark"
-  },
+	"galleryBanner": {
+		"color": "#252525",
+		"theme": "dark"
+	},
 	"files": [
 		"dist"
 	],
