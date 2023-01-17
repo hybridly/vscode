@@ -1,6 +1,3 @@
 {
-	"extends": "@innocenzi/eslint-config",
-	"rules": {
-		"no-console": "off"
-	}
+	"extends": "@innocenzi/eslint-config"
 }
