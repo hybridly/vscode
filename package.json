@@ -52,16 +52,12 @@
 			"title": "Hybridly",
 			"properties": {
 				"hybridly.componentMethods": {
-					"type": [
-						"string"
-					],
+					"type": "array",
 					"default": [],
 					"description": "Additional methods which first parameter should link to page components."
 				},
 				"hybridly.routeMethods": {
-					"type": [
-						"string"
-					],
+					"type": "array",
 					"default": [],
 					"description": "Additional methods which first parameter correspond to a route name."
 				}
