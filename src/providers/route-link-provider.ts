@@ -44,6 +44,7 @@ export class RouteLinkProvider implements DocumentLinkProvider {
 
 			if (!route) {
 				log.appendLine(`Could not find route: ${route}`)
+				return
 			}
 
 			return actionToLink(workspaceUri!, route!.action)?.uri
