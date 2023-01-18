@@ -16,9 +16,9 @@ export class RouteLinkProvider implements DocumentLinkProvider {
 			...workspace.getConfiguration('hybridly').get<string[]>('routeMethods', []),
 		]
 
-		// https://regex101.com/r/cfX43R/1
+		// https://regex101.com/r/A6TgMf/1
 		const links = methods.flatMap((method) => locateInDocument(
-			new RegExp(`${escapeRegExp(method)}\\(\\s*([\\'"])(?<route>.+)(\\1)\\s*[\\),]`, 'gmd'),
+			new RegExp(`${escapeRegExp(method)}\\(\\s*([\\'"])(?<route>[^)]+)(\\1\\s*[\\),])`, 'gmd'),
 			'route',
 			document,
 		))
