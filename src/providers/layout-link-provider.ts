@@ -8,7 +8,7 @@ import { LocatedPattern, locateInDocument } from '../utils/locate-in-document'
 */
 export class LayoutLinkProvider implements DocumentLinkProvider {
 	provideDocumentLinks(document: TextDocument): ProviderResult<DocumentLink[]> {
-		// https://regex101.com/r/UdrLZo/1
+		// https://regex101.com/r/fh3XKa/1
 		const layoutWithArgument = /<template\s*layout=\s*([\'"])(?<layout>.+)(\1)\s*[>]/gmd
 		// https://regex101.com/r/0aVnrx/2
 		const layoutWithoutArgument = /<template\s*(?<layout>layout)\s*[>]/gmd
@@ -17,15 +17,17 @@ export class LayoutLinkProvider implements DocumentLinkProvider {
 			...locateInDocument(layoutWithArgument, 'layout', document),
 			...locateInDocument(layoutWithoutArgument, 'layout', document),
 		].flatMap((component) => {
-			if (component.value.includes(',')) {
-				const layouts = component.value.split(',')
-				return layouts.map((value, i) => ({
-					value,
-					range: new Range(
-						new Position(component.range.start.line, component.range.start.character + layouts.slice(0, i).join(',').length + (i === 0 ? 0 : 1)),
-						new Position(component.range.start.line, component.range.start.character + layouts.slice(0, i + 1).join(',').length),
-					),
-				}))
+			for (const separator of [', ', ',']) {
+				if (component.value.includes(separator)) {
+					const layouts = component.value.split(separator)
+					return layouts.map((value, i) => ({
+						value,
+						range: new Range(
+							new Position(component.range.start.line, component.range.start.character + layouts.slice(0, i).join(separator).length + (i === 0 ? 0 : separator.length)),
+							new Position(component.range.start.line, component.range.start.character + layouts.slice(0, i + 1).join(separator).length),
+						),
+					}))
+				}
 			}
 
 			return [component]
