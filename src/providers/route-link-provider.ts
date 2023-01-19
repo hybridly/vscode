@@ -1,6 +1,7 @@
 /* eslint-disable prefer-regex-literals */
 import { execSync } from 'node:child_process'
 import { DocumentLink, DocumentLinkProvider, ProviderResult, TextDocument, Uri, workspace } from 'vscode'
+import { getRouteMethods } from '../settings'
 import { LocatedPattern, locateInDocument } from '../utils/locate-in-document'
 import { log } from '../utils/log'
 import { actionToLink } from '../utils/psr4'
@@ -11,10 +12,7 @@ import { escapeRegExp } from '../utils/regexp'
 */
 export class RouteLinkProvider implements DocumentLinkProvider {
 	provideDocumentLinks(document: TextDocument): ProviderResult<DocumentLink[]> {
-		const methods = [
-			'route',
-			...workspace.getConfiguration('hybridly').get<string[]>('routeMethods', []),
-		]
+		const methods = getRouteMethods()
 
 		// https://regex101.com/r/A6TgMf/1
 		const links = methods.flatMap((method) => locateInDocument(

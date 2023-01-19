@@ -6,6 +6,8 @@ import { ComponentLinkProvider } from './providers/component-link-provider'
 import { LayoutLinkProvider } from './providers/layout-link-provider'
 import { RouteLinkProvider } from './providers/route-link-provider'
 import { log } from './utils/log'
+import { ComponentAutocompletionProvider } from './providers/component-autocompletion-provider'
+import { LayoutAutocompletionProvider } from './providers/layout-autocompletion-provider'
 
 export async function activate(context: ExtensionContext) {
 	log.appendLine(`Hybridly for Code v${version}\n`)
@@ -18,7 +20,7 @@ export async function activate(context: ExtensionContext) {
 
 	const config = workspace.getConfiguration('hybridly')
 	const disabled = config.get<boolean>('disable', false)
-	if (disabled) {
+	if (!disabled) {
 		log.appendLine('Disabled by configuration.')
 		return
 	}
@@ -52,6 +54,18 @@ export async function activate(context: ExtensionContext) {
 			{ scheme: 'file', language: 'ts', pattern: '**/*.ts' },
 		],
 		new RouteLinkProvider(),
+	))
+
+	context.subscriptions.push(languages.registerCompletionItemProvider(
+		{ scheme: 'file', language: 'php', pattern: '**/*.php' },
+		new ComponentAutocompletionProvider(),
+		...["'", '"'],
+	))
+
+	context.subscriptions.push(languages.registerCompletionItemProvider(
+		{ scheme: 'file', language: 'vue', pattern: '**/*.vue' },
+		new LayoutAutocompletionProvider(),
+		...["'", '"', '=', '="', '=""'],
 	))
 }
 

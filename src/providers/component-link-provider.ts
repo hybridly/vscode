@@ -1,6 +1,7 @@
 /* eslint-disable prefer-regex-literals */
 import fs from 'node:fs'
 import { DocumentLink, DocumentLinkProvider, ProviderResult, TextDocument, Uri, workspace } from 'vscode'
+import { getComponentMethods } from '../settings'
 import { LocatedPattern, locateInDocument } from '../utils/locate-in-document'
 import { escapeRegExp } from '../utils/regexp'
 
@@ -9,12 +10,7 @@ import { escapeRegExp } from '../utils/regexp'
 */
 export class ComponentLinkProvider implements DocumentLinkProvider {
 	provideDocumentLinks(document: TextDocument): ProviderResult<DocumentLink[]> {
-		const methods = [
-			'hybridly',
-			'hybridly()->view',
-			'assertHybridView',
-			...workspace.getConfiguration('hybridly').get<string[]>('componentMethods', []),
-		]
+		const methods = getComponentMethods()
 
 		// https://regex101.com/r/7PbMO2/1
 		// https://regex101.com/r/9yvy9C/1

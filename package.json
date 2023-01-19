@@ -45,7 +45,7 @@
 		"vscode": "^1.74.0"
 	},
 	"activationEvents": [
-		"onLanguage:php"
+		"onStartupFinished"
 	],
 	"contributes": {
 		"configuration": {
@@ -58,14 +58,18 @@
 				},
 				"hybridly.componentMethods": {
 					"type": "array",
-					"default": [],
 					"description": "Additional methods which first parameter should link to page components."
 				},
 				"hybridly.routeMethods": {
 					"type": "array",
-					"default": [],
 					"description": "Additional methods which first parameter correspond to a route name."
-				}
+				},
+				"hybridly.directories": {
+					"type": [
+						"array",
+						"string"
+					],
+					"markdownDescription": "Pattern(s) that should match the directories in which pages or layouts are located. The following placeholders can be used: `{domain}`, `{page}`, `{layout}`"				}
 			}
 		}
 	},
