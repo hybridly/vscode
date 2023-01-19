@@ -2,7 +2,7 @@
 	"publisher": "innocenzi",
 	"name": "vscode-hybridly",
 	"displayName": "Hybridly",
-	"version": "0.1.6",
+	"version": "0.1.7",
 	"private": true,
 	"preview": true,
 	"packageManager": "pnpm@7.8.0",
@@ -69,7 +69,8 @@
 						"array",
 						"string"
 					],
-					"markdownDescription": "Pattern(s) that should match the directories in which pages or layouts are located. The following placeholders can be used: `{domain}`, `{page}`, `{layout}`"				}
+					"markdownDescription": "Pattern(s) that should match the directories in which pages or layouts are located. The following placeholders can be used: `{domain}`, `{page}`, `{layout}`"
+				}
 			}
 		}
 	},
