@@ -51,6 +51,11 @@
 		"configuration": {
 			"title": "Hybridly",
 			"properties": {
+				"hybridly.disable": {
+					"type": "boolean",
+					"default": "false",
+					"description": "Disables the extension."
+				},
 				"hybridly.componentMethods": {
 					"type": "array",
 					"default": [],
