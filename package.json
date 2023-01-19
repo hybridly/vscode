@@ -45,7 +45,7 @@
 		"vscode": "^1.74.0"
 	},
 	"activationEvents": [
-		"onStartupFinished"
+		"onLanguage:php"
 	],
 	"contributes": {
 		"configuration": {
