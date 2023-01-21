@@ -12,6 +12,8 @@ export function getComponentMethods() {
 export function getRouteMethods() {
 	return [
 		'route',
+		'to_route',
+		'router.to',
 		...workspace.getConfiguration('hybridly').get<string[]>('routeMethods') || [],
 	]
 }
