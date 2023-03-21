@@ -7,7 +7,7 @@ interface Autoload {
 	'psr-4': Record<string, string>
 }
 
-interface ControllerAction {
+export interface ControllerAction {
 	fqcn: string
 	file: string
 	action: string
@@ -15,6 +15,7 @@ interface ControllerAction {
 }
 
 export function getComposerAutoload(workspace: Uri): Autoload {
+	// TODO: cache
 	const composer = JSON.parse(fs.readFileSync(path.resolve(workspace.fsPath, 'composer.json'), { encoding: 'utf-8' }))
 
 	return composer.autoload

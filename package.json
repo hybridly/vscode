@@ -63,13 +63,6 @@
 				"hybridly.routeMethods": {
 					"type": "array",
 					"description": "Additional methods which first parameter correspond to a route name."
-				},
-				"hybridly.directories": {
-					"type": [
-						"array",
-						"string"
-					],
-					"markdownDescription": "Pattern(s) that should match the directories in which pages or layouts are located. The following placeholders can be used: `{domain}`, `{page}`, `{layout}`"
 				}
 			}
 		}
@@ -87,18 +80,22 @@
 	},
 	"devDependencies": {
 		"@antfu/ni": "^0.20.0",
-		"@innocenzi/eslint-config": "^0.16.2",
-		"@types/node": "^18.15.0",
+		"@innocenzi/eslint-config": "^0.16.3",
+		"@types/node": "^18.15.5",
 		"@types/vscode": "^1.76.0",
 		"bumpp": "^9.0.0",
-		"eslint": "^8.35.0",
+		"eslint": "^8.36.0",
 		"esno": "^0.16.3",
-		"pnpm": "^7.29.1",
+		"pnpm": "^7.30.0",
 		"rimraf": "^4.4.0",
-		"tsup": "^6.6.3",
+		"tsup": "^6.7.0",
 		"typescript": "^4.9.5",
-		"vite": "^4.1.4",
-		"vitest": "^0.29.2",
+		"vite": "^4.2.1",
+		"vitest": "^0.29.7",
 		"vsce": "^2.15.0"
+	},
+	"dependencies": {
+		"@hybridly/config": "0.1.0-alpha.5",
+		"unconfig": "^0.3.7"
 	}
 }
