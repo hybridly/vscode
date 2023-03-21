@@ -12,5 +12,6 @@ export default defineConfig({
 	],
 	noExternal: [
 		'@hybridly/config',
+		'unconfig',
 	],
 })
