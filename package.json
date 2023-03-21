@@ -78,6 +78,10 @@
 		"typecheck": "tsc --noEmit",
 		"release": "bumpp && nr publish"
 	},
+	"dependencies": {
+		"@hybridly/config": "0.1.0-alpha.5",
+		"unconfig": "^0.3.7"
+	},
 	"devDependencies": {
 		"@antfu/ni": "^0.20.0",
 		"@innocenzi/eslint-config": "^0.16.3",
@@ -93,9 +97,5 @@
 		"vite": "^4.2.1",
 		"vitest": "^0.29.7",
 		"vsce": "^2.15.0"
-	},
-	"dependencies": {
-		"@hybridly/config": "0.1.0-alpha.5",
-		"unconfig": "^0.3.7"
 	}
 }
