@@ -1,101 +1,101 @@
 {
-	"publisher": "innocenzi",
-	"name": "vscode-hybridly",
-	"displayName": "Hybridly",
-	"version": "0.3.1",
-	"private": true,
-	"preview": true,
-	"packageManager": "pnpm@7.8.0",
-	"description": "Visual Studio Code extension for Hybridly",
-	"keywords": [
-		"hybridly",
-		"inertia",
-		"inertiajs",
-		"vue",
-		"laravel",
-		"vite"
-	],
-	"license": "MIT",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/hybridly/vscode"
-	},
-	"funding": "https://github.com/sponsors/innocenzi",
-	"author": "Enzo Innocenzi <enzo@innocenzi.dev>",
-	"homepage": "https://github.com/hybridly/vscode#readme",
-	"bugs": {
-		"url": "https://github.com/hybridly/vscode/issues"
-	},
-	"sponsor": {
-		"url": "https://github.com/sponsors/innocenzi"
-	},
-	"categories": [
-		"Other"
-	],
-	"files": [
-		"dist"
-	],
-	"main": "./dist/index.js",
-	"icon": "res/icon.png",
-	"galleryBanner": {
-		"color": "#252525",
-		"theme": "dark"
-	},
-	"engines": {
-		"vscode": "^1.73.0"
-	},
-	"activationEvents": [
-		"onStartupFinished"
-	],
-	"contributes": {
-		"configuration": {
-			"title": "Hybridly",
-			"properties": {
-				"hybridly.disable": {
-					"type": "boolean",
-					"default": "false",
-					"description": "Disables the extension."
-				},
-				"hybridly.componentMethods": {
-					"type": "array",
-					"description": "Additional methods which first parameter should link to page components."
-				},
-				"hybridly.routeMethods": {
-					"type": "array",
-					"description": "Additional methods which first parameter correspond to a route name."
-				}
-			}
-		}
-	},
-	"scripts": {
-		"build": "tsup src/index.ts",
-		"dev": "nr build --watch",
-		"lint": "eslint .",
-		"vscode:prepublish": "nr build",
-		"publish": "vsce publish --no-dependencies",
-		"pack": "vsce package --no-dependencies",
-		"test": "vitest",
-		"typecheck": "tsc --noEmit",
-		"release": "bumpp && nr publish"
-	},
-	"dependencies": {
-		"@hybridly/config": "0.1.0-alpha.5",
-		"unconfig": "^0.3.7"
-	},
-	"devDependencies": {
-		"@antfu/ni": "^0.20.0",
-		"@innocenzi/eslint-config": "^0.16.3",
-		"@types/node": "^18.15.5",
-		"@types/vscode": "^1.73.0",
-		"@vscode/vsce": "^2.15.0",
-		"bumpp": "^9.0.0",
-		"eslint": "^8.36.0",
-		"esno": "^0.16.3",
-		"pnpm": "^7.30.0",
-		"rimraf": "^4.4.0",
-		"tsup": "^6.7.0",
-		"typescript": "^4.9.5",
-		"vite": "^4.2.1",
-		"vitest": "^0.29.7"
-	}
+    "publisher": "innocenzi",
+    "name": "vscode-hybridly",
+    "displayName": "Hybridly",
+    "version": "0.3.1",
+    "private": true,
+    "preview": true,
+    "packageManager": "pnpm@7.8.0",
+    "description": "Visual Studio Code extension for Hybridly",
+    "keywords": [
+        "hybridly",
+        "inertia",
+        "inertiajs",
+        "vue",
+        "laravel",
+        "vite"
+    ],
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/hybridly/vscode"
+    },
+    "funding": "https://github.com/sponsors/innocenzi",
+    "author": "Enzo Innocenzi <enzo@innocenzi.dev>",
+    "homepage": "https://github.com/hybridly/vscode#readme",
+    "bugs": {
+        "url": "https://github.com/hybridly/vscode/issues"
+    },
+    "sponsor": {
+        "url": "https://github.com/sponsors/innocenzi"
+    },
+    "categories": [
+        "Other"
+    ],
+    "files": [
+        "dist"
+    ],
+    "main": "./dist/index.js",
+    "icon": "res/icon.png",
+    "galleryBanner": {
+        "color": "#252525",
+        "theme": "dark"
+    },
+    "engines": {
+        "vscode": "^1.73.0"
+    },
+    "activationEvents": [
+        "onStartupFinished"
+    ],
+    "contributes": {
+        "configuration": {
+            "title": "Hybridly",
+            "properties": {
+                "hybridly.disable": {
+                    "type": "boolean",
+                    "default": "false",
+                    "description": "Disables the extension."
+                },
+                "hybridly.componentMethods": {
+                    "type": "array",
+                    "description": "Additional methods which first parameter should link to page components."
+                },
+                "hybridly.routeMethods": {
+                    "type": "array",
+                    "description": "Additional methods which first parameter correspond to a route name."
+                }
+            }
+        }
+    },
+    "scripts": {
+        "build": "tsup src/index.ts",
+        "dev": "nr build --watch",
+        "lint": "eslint .",
+        "vscode:prepublish": "nr build",
+        "publish": "vsce publish --no-dependencies",
+        "pack": "vsce package --no-dependencies",
+        "test": "vitest",
+        "typecheck": "tsc --noEmit",
+        "release": "bumpp && nr publish"
+    },
+    "dependencies": {
+        "@hybridly/config": "0.2.1",
+        "unconfig": "^0.3.7"
+    },
+    "devDependencies": {
+        "@antfu/ni": "^0.21.3",
+        "@innocenzi/eslint-config": "^0.19.1",
+        "@types/node": "^18.15.11",
+        "@types/vscode": "^1.73.0",
+        "@vscode/vsce": "^2.18.0",
+        "bumpp": "^9.1.0",
+        "eslint": "^8.37.0",
+        "esno": "^0.16.3",
+        "pnpm": "^8.1.1",
+        "rimraf": "^4.4.1",
+        "tsup": "^6.7.0",
+        "typescript": "^5.0.3",
+        "vite": "^4.2.1",
+        "vitest": "^0.29.8"
+    }
 }
