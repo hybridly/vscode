@@ -2,18 +2,11 @@ import { Range, TextDocument } from 'vscode'
 
 export type LocatedPattern = { value: string; range: Range }
 
-type RegExpExecArrayWithIndices = RegExpExecArray & {
-	indices?: [number, number] & {
-		groups?: { [key: string]: [number, number] }
-	}
-	groups?: { [key: string]: string }
-}
-
 /**
  * Locates a pattern in a document an returns the range of all occurences.
  */
 export function locateInDocument(pattern: RegExp, group: string, document: TextDocument): LocatedPattern[] {
-	let match: RegExpExecArrayWithIndices | null
+	let match: RegExpExecArray | null
 	const results: LocatedPattern[] = []
 
 	// eslint-disable-next-line no-cond-assign
