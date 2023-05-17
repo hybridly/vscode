@@ -1,7 +1,6 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { Uri } from 'vscode'
-import { log } from './log'
 
 interface Autoload {
 	'psr-4': Record<string, string>
@@ -49,7 +48,7 @@ export function resolvePhpFile(workspace: Uri, file: Uri): PhpFile | undefined {
 		fileName,
 		className,
 		rootPsr4Namespace: rootNamespace[0],
-		fqcn: unprefixedNamespace.replace(rootNamespace[1], rootNamespace[0]),
+		fqcn: unprefixedNamespace.replace(rootNamespace[1], rootNamespace[0]).replaceAll('\\\\', '\\'),
 	}
 }
 
@@ -73,7 +72,8 @@ export function actionToLink(workspace: Uri, action: string): ControllerAction |
 	const uri = Uri.joinPath(workspace, file)
 
 	if (!fs.existsSync(uri.fsPath)) {
-		log.appendLine(`Could not find controller: ${uri.fsPath}`)
+		// TODO: chances are this is a vendor controller
+		// log.appendLine(`Could not find controller: ${uri.fsPath} [${fqcn}]`)
 		return
 	}
 
