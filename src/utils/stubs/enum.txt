@@ -1,0 +1,4 @@
+enum {name}: string
+{
+    // case FOO = 'foo';
+}

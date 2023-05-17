@@ -63,6 +63,10 @@
                 "hybridly.routeMethods": {
                     "type": "array",
                     "description": "Additional methods which first parameter correspond to a route name."
+                },
+                "hybridly.generation.strictTypes": {
+                    "type": "boolean",
+                    "description": "Whether to declare strict types when generation PHP files."
                 }
             }
         },
@@ -70,6 +74,12 @@
             {
                 "command": "hybridly.php.update-namespace",
                 "title": "Update the current namespace",
+                "category": "Hybridly",
+                "enablement": "editorLangId == php"
+            },
+            {
+                "command": "hybridly.php.generate-class",
+                "title": "Generate class",
                 "category": "Hybridly",
                 "enablement": "editorLangId == php"
             }

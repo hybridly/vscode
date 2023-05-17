@@ -1,0 +1,7 @@
+class {name}
+{
+    public function __construct()
+    {
+        //
+    }
+}

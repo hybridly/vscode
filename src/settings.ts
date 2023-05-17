@@ -22,3 +22,7 @@ export function getRouteMethods() {
 		...workspace.getConfiguration('hybridly').get<string[]>('routeMethods') || [],
 	]
 }
+
+export function generatesStrictTypes() {
+	return workspace.getConfiguration('hybridly').get<boolean>('generation.strictTypes') || false
+}

@@ -1,48 +1,30 @@
-/* eslint-disable brace-style */
-import { Position, Range, commands, window } from 'vscode'
+import { Position, Range } from 'vscode'
 import { Context } from '../context'
-import { log } from '../utils/log'
-import { resolvePhpFile } from '../utils/psr4'
+import { registerCommand } from '../utils/commands'
+import { generatePhpPrelude } from '../utils/generate-php-class'
 
 export async function registerUpdateNamespaceCommand(context: Context) {
-	log.appendLine('Registering the namespace command.')
-
-	async function insertNamespace() {
-		if (!window.activeTextEditor) {
-			return
-		}
-
-		if (!context.workspace) {
-			window.showWarningMessage('You may only insert a namespace when inside a workspace.')
-		}
-
-		const file = resolvePhpFile(context.uri, window.activeTextEditor.document.uri)
-
-		if (!file) {
-			window.showWarningMessage('Current file could not be resolved as a validd PSR-4 PHP file.')
-			return
-		}
-
-		const editor = window.activeTextEditor
-
-		// Checks if there is a `namespace` statement in the first 5 lines
+	registerCommand(context, 'update-namespace', async({ file, editor }) => {
 		const currentlySpecifiedNamespace = editor.document.getText(
 			new Range(new Position(0, 0), new Position(6, 0)),
 		).match(/namespace [^;]+;/)
 
 		const documentText = editor.document.getText()
 		const newDocumentText = (() => {
+			// Replaces the existing namespace if any
 			if (currentlySpecifiedNamespace) {
 				return documentText.replace(currentlySpecifiedNamespace[0], `namespace ${file.fqcn};`)
 			}
 
-			const eol = editor.document.eol === 1 ? '\n' : '\r\n'
+			const prelude = generatePhpPrelude(editor, file)
 
+			// Replaces <?php if it's there with a namespace statement
 			if (documentText.startsWith('<?php')) {
-				return documentText.replace('<?php', `<?php${eol}${eol}namespace ${file.fqcn};${eol}`)
+				return documentText.replace('<?php', prelude)
 			}
 
-			return `<?php${eol}${eol}namespace ${file.fqcn};${eol}${documentText}`
+			// Adds a prelude otherwise
+			return `${prelude}${documentText}`
 		})()
 
 		editor.edit((builder) => {
@@ -51,9 +33,5 @@ export async function registerUpdateNamespaceCommand(context: Context) {
 				newDocumentText,
 			)
 		})
-	}
-
-	context.extension.subscriptions.push(
-		commands.registerCommand('hybridly.php.update-namespace', insertNamespace),
-	)
+	})
 }

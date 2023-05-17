@@ -14,19 +14,19 @@ export interface ControllerAction {
 	uri: Uri
 }
 
-export function getComposerAutoload(workspace: Uri): Autoload {
-	// TODO: cache
-	const composer = JSON.parse(fs.readFileSync(path.resolve(workspace.fsPath, 'composer.json'), { encoding: 'utf-8' }))
-
-	return composer.autoload
-}
-
-interface PhpFile {
+export interface PhpFile {
 	relativePath: string
 	fileName: string
 	className: string
 	rootPsr4Namespace: string
 	fqcn: string
+}
+
+export function getComposerAutoload(workspace: Uri): Autoload {
+	// TODO: cache
+	const composer = JSON.parse(fs.readFileSync(path.resolve(workspace.fsPath, 'composer.json'), { encoding: 'utf-8' }))
+
+	return composer.autoload
 }
 
 export function resolvePhpFile(workspace: Uri, file: Uri): PhpFile | undefined {
