@@ -7,6 +7,7 @@ import { registerPageLinkProvider } from './hyperlinks/page'
 import { registerLayoutAutocomplete } from './autocomplete/layout'
 import { registerRouteLinkProvider } from './hyperlinks/route'
 import { registerLayoutLinkProvider } from './hyperlinks/layout'
+import { registerUpdateNamespaceCommand } from './commands/update-namespace'
 
 export async function activate(extension: ExtensionContext) {
 	log.appendLine(`Hybridly for Code v${version}\n`)
@@ -22,6 +23,7 @@ export async function activate(extension: ExtensionContext) {
 	await registerPageLinkProvider(context)
 	await registerRouteLinkProvider(context)
 	await registerLayoutLinkProvider(context)
+	await registerUpdateNamespaceCommand(context)
 }
 
 export function deactivate() {

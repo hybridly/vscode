@@ -65,7 +65,15 @@
                     "description": "Additional methods which first parameter correspond to a route name."
                 }
             }
-        }
+        },
+        "commands": [
+            {
+                "command": "hybridly.php.update-namespace",
+                "title": "Update the current namespace",
+                "category": "Hybridly",
+                "enablement": "editorLangId == php"
+            }
+        ]
     },
     "scripts": {
         "build": "tsup src/index.ts",

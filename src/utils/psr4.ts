@@ -21,6 +21,42 @@ export function getComposerAutoload(workspace: Uri): Autoload {
 	return composer.autoload
 }
 
+interface PhpFile {
+	relativePath: string
+	fileName: string
+	className: string
+	rootPsr4Namespace: string
+	fqcn: string
+}
+
+export function resolvePhpFile(workspace: Uri, file: Uri): PhpFile | undefined {
+	const autoload = getComposerAutoload(workspace)
+
+	const relativePath = path.relative(workspace.fsPath, file.fsPath)
+	const pathParts = relativePath.split(path.sep)
+	const namespaceParts = pathParts.slice(0, -1)
+	const fileName = pathParts.slice(-1)[0]
+	const className = fileName.split('.')[0]
+	const unprefixedNamespace = namespaceParts.join('\\')
+
+	const rootNamespace = Object.entries(autoload['psr-4'])
+		.map(([key, value]) => [key, value.replace('/', '\\')])
+		.find(([_, value]) => unprefixedNamespace.startsWith(value))
+		?? []
+
+	if (!rootNamespace.length) {
+		return
+	}
+
+	return {
+		relativePath,
+		fileName,
+		className,
+		rootPsr4Namespace: rootNamespace[0],
+		fqcn: unprefixedNamespace.replace(rootNamespace[1], rootNamespace[0]),
+	}
+}
+
 export function fqcnToFile(workspace: Uri, fqcn: string): string {
 	const autoload = getComposerAutoload(workspace)
 
