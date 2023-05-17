@@ -40,13 +40,9 @@ export function resolvePhpFile(workspace: Uri, file: Uri): PhpFile | undefined {
 	const unprefixedNamespace = namespaceParts.join('\\')
 
 	const rootNamespace = Object.entries(autoload['psr-4'])
-		.map(([key, value]) => [key, value.replace('/', '\\')])
+		.map(([key, value]) => [key, value.replaceAll('/', '\\')])
 		.find(([_, value]) => unprefixedNamespace.startsWith(value))
 		?? []
-
-	if (!rootNamespace.length) {
-		return
-	}
 
 	return {
 		relativePath,
