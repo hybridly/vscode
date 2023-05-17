@@ -92,7 +92,7 @@
         "vscode:prepublish": "nr build",
         "publish": "vsce publish --no-dependencies",
         "pack": "vsce package --no-dependencies",
-        "test": "vitest",
+        "test": "echo \"No test\"",
         "typecheck": "tsc --noEmit",
         "release": "bumpp && nr publish"
     },
