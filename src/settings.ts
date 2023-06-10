@@ -26,3 +26,10 @@ export function getRouteMethods() {
 export function generatesStrictTypes() {
 	return workspace.getConfiguration('hybridly').get<boolean>('generation.strictTypes') || false
 }
+
+export function getPhpPath(): string {
+	return workspace.getConfiguration('php.validate').get<string>('executablePath')
+		?? workspace.getConfiguration('hybridly.php').get<string>('executablePath')
+		?? process.env.PHP_EXECUTABLE_PATH
+		?? 'php'
+}

@@ -18,13 +18,13 @@ export async function registerPageAutocomplete(context: Context) {
 				return
 			}
 
-			return context.completions.pages.flatMap((page) => {
+			return context.completions.views.flatMap((view) => {
 				if (!word) {
-					return page.generateCompletion()
+					return view.generateCompletion()
 				}
 
-				if (page.identifier.startsWith(word)) {
-					return page.generateCompletion(word)
+				if (view.identifier.startsWith(word)) {
+					return view.generateCompletion(word)
 				}
 
 				return []

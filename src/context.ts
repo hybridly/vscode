@@ -1,10 +1,10 @@
 import fs from 'node:fs'
-import path from 'node:path'
+import path, { resolve } from 'node:path'
 import { execSync } from 'node:child_process'
 import { CompletionItem, CompletionItemKind, ExtensionContext, RelativePattern, Uri, workspace } from 'vscode'
-import { loadHybridlyConfig, ResolvedHybridlyConfig, resolvePageOrLayoutGlob } from '@hybridly/config'
 import { log } from './utils/log'
 import { actionToLink, ControllerAction } from './utils/psr4'
+import { getPhpPath } from './settings'
 
 interface HybridlyCompletionItem {
 	identifier: string
@@ -14,7 +14,7 @@ interface HybridlyCompletionItem {
 }
 
 interface Completions {
-	pages: HybridlyCompletionItem[]
+	views: HybridlyCompletionItem[]
 	layouts: HybridlyCompletionItem[]
 }
 
@@ -33,9 +33,28 @@ export interface Context {
 	workspace: typeof workspace
 	cwd: string
 	uri: Uri
-	hybridly: ResolvedHybridlyConfig
+	configuration: DynamicConfiguration
 	completions: Completions
 	routes: Route[]
+}
+
+interface DynamicConfiguration {
+	architecture: {
+		root: string
+	}
+	components: {
+		eager?: boolean
+		directories: string[]
+		views: Component[]
+		layouts: Component[]
+		components: Component[]
+	}
+}
+
+interface Component {
+	path: string
+	identifier: string
+	namespace: string
 }
 
 export async function loadContext(extension: ExtensionContext): Promise<Context | false> {
@@ -67,16 +86,16 @@ export async function loadContext(extension: ExtensionContext): Promise<Context 
 		return false
 	}
 
-	const hybridly = await loadHybridlyConfig(cwd)
+	const configuration = await loadConfiguration(cwd)
 
 	return {
 		extension,
 		workspace,
 		cwd,
 		uri,
-		hybridly,
+		configuration,
 		completions: {
-			pages: [],
+			views: [],
 			layouts: [],
 		},
 		routes: [],
@@ -85,61 +104,41 @@ export async function loadContext(extension: ExtensionContext): Promise<Context 
 
 export async function registerContextUpdater(context: Context) {
 	async function updateAllCompletions() {
-		await updateCompletions('pages', resolvePageOrLayoutGlob('pages', context.hybridly).replace(/^\//, ''))
-		await updateCompletions('layouts', resolvePageOrLayoutGlob('layouts', context.hybridly).replace(/^\//, ''))
+		await updateConfig()
+		await updateCompletions('views', context.configuration.components.views)
+		await updateCompletions('layouts', context.configuration.components.layouts)
 		await updateRoutes()
 	}
 
 	async function updateConfig() {
-		log.appendLine('hybridly.config.ts changed, reloading...')
-		context.hybridly = await loadHybridlyConfig(context.cwd)
-		await updateAllCompletions()
+		log.appendLine('Updating configuration...')
+		context.configuration = await loadConfiguration(context.cwd)
 	}
 
-	async function updateCompletions(directory: keyof Completions, glob: string) {
-		log.appendLine(`Collecting ${directory}...`)
+	async function updateCompletions(type: keyof Completions, collection: Component[]) {
+		log.appendLine(`Updating ${type} completions...`)
 
-		const files = await workspace.findFiles({
-			base: context.cwd,
-			baseUri: context.uri,
-			pattern: glob,
-		})
-
-		const components = files.flatMap((uri) => {
-			const regexp = context.hybridly.domains
-				? new RegExp(`${context.hybridly.domains}\/(.*)\/${directory}\/(.*)\.vue`)
-				: new RegExp(`${directory}\/(.*)\.vue`)
-
-			const [match, domain, component] = uri.path.match(regexp) || []
-
-			const identifier = context.hybridly.domains
-				? `${domain}:${component}`
-				: domain
-
-			if (!match) {
-				return []
-			}
-
+		const components = collection.map((component) => {
+			const uri = Uri.file(resolve(context.cwd, component.path))
 			const lines = fs.readFileSync(uri.fsPath).toString().split('\n')
 			const lineIndexOfAction = lines.findIndex((line) => line.includes('<script setup')) + 1
-			const target = uri.with({ fragment: `L${lineIndexOfAction + 1},0` })
 
-			return [{
+			return {
 				path: uri.path,
-				identifier: identifier?.replaceAll('/', '.'),
-				target,
-			}]
+				identifier: component.identifier,
+				target: uri.with({ fragment: `L${lineIndexOfAction + 1},0` }),
+			}
 		})
 
-		log.appendLine(`Collected ${components.length} ${directory}.`)
+		log.appendLine(`Registered ${components.length} ${type}.`)
 
-		context.completions[directory] = components.map((component) => ({
+		context.completions[type] = components.map((component) => ({
 			identifier: component.identifier,
 			path: component.path,
 			target: component.target,
 			generateCompletion: (start?: string) => new CompletionItem({
 				label: start ? component.identifier.replace(start, '') : component.identifier,
-				description: directory === 'pages' ? 'Hybrid page component' : 'Hybrid layout component',
+				description: type === 'views' ? 'Hybrid page component' : 'Hybrid layout component',
 			}, CompletionItemKind.Value),
 		}))
 	}
@@ -164,16 +163,25 @@ export async function registerContextUpdater(context: Context) {
 		log.appendLine(`Collected ${context.routes.length} routes.`)
 	}
 
-	const completionWatcher = workspace.createFileSystemWatcher(new RelativePattern(`${context.cwd}/${context.hybridly.root}`, '**/*'))
+	const completionWatcher = workspace.createFileSystemWatcher(new RelativePattern(context.cwd, '**/*.vue'))
 	completionWatcher.onDidChange(updateAllCompletions)
 	completionWatcher.onDidCreate(updateAllCompletions)
 	completionWatcher.onDidDelete(updateAllCompletions)
 
-	const configWatcher = workspace.createFileSystemWatcher(new RelativePattern(context.cwd, 'hybridly.config.ts'))
-	configWatcher.onDidChange(updateConfig)
+	const configWatcher = workspace.createFileSystemWatcher(new RelativePattern(`${context.cwd}/config`, 'hybridly.php'))
+	configWatcher.onDidChange(updateAllCompletions)
 
 	const routeWatcher = workspace.createFileSystemWatcher(new RelativePattern(`${context.cwd}/routes`, '**/*.php'))
-	routeWatcher.onDidChange(updateRoutes)
+	routeWatcher.onDidChange(updateAllCompletions)
 
 	updateAllCompletions()
+}
+
+export async function loadConfiguration(cwd: string): Promise<DynamicConfiguration> {
+	try {
+		return JSON.parse(execSync(`${getPhpPath()} artisan hybridly:config`, { cwd }).toString())
+	} catch (e) {
+		console.error('Could not load configuration from [php artisan].')
+		throw e
+	}
 }

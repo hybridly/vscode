@@ -13,7 +13,9 @@
         "inertiajs",
         "vue",
         "laravel",
-        "vite"
+        "vite",
+        "php",
+        "class generation"
     ],
     "license": "MIT",
     "repository": {
@@ -95,10 +97,6 @@
         "test": "echo \"No test\"",
         "typecheck": "tsc --noEmit",
         "release": "bumpp && nr publish"
-    },
-    "dependencies": {
-        "@hybridly/config": "0.2.1",
-        "unconfig": "^0.3.7"
     },
     "devDependencies": {
         "@antfu/ni": "^0.21.3",

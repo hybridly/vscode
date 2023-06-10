@@ -18,7 +18,7 @@ export async function registerPageLinkProvider(context: Context) {
 			)
 
 			return links.flatMap((link) => {
-				const page = context.completions.pages.find((page) => link.value === page.identifier)
+				const page = context.completions.views.find((view) => link.value === view.identifier)
 
 				if (!page) {
 					return []

@@ -10,8 +10,4 @@ export default defineConfig({
 	external: [
 		'vscode',
 	],
-	noExternal: [
-		'@hybridly/config',
-		'unconfig',
-	],
 })
