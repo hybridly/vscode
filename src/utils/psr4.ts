@@ -1,6 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { Uri } from 'vscode'
+import { log } from './log'
 
 interface Autoload {
 	'psr-4': Record<string, string>
@@ -36,19 +37,33 @@ export function resolvePhpFile(workspace: Uri, file: Uri): PhpFile | undefined {
 	const namespaceParts = pathParts.slice(0, -1)
 	const fileName = pathParts.slice(-1)[0]
 	const className = fileName.split('.')[0]
-	const unprefixedNamespace = namespaceParts.join('\\')
+	const pathInferredNamespace = namespaceParts.join('\\')
 
 	const rootNamespace = Object.entries(autoload['psr-4'])
-		.map(([key, value]) => [key, value.replaceAll('/', '\\')])
-		.find(([_, value]) => unprefixedNamespace.startsWith(value))
+		.map(([key, value]) => [key, value.replaceAll('/', '\\').replace(/\\$/, '')])
+		.find(([_, value]) => pathInferredNamespace.startsWith(value))
 		?? []
+
+	log.appendLine(JSON.stringify({
+		autoload: autoload['psr-4'],
+		relativePath,
+		pathParts,
+		namespaceParts,
+		fileName,
+		className,
+		pathInferredNamespace,
+		rootNamespace,
+	}, null, 2))
 
 	return {
 		relativePath,
 		fileName,
 		className,
 		rootPsr4Namespace: rootNamespace[0],
-		fqcn: unprefixedNamespace.replace(rootNamespace[1], rootNamespace[0]).replaceAll('\\\\', '\\'),
+		fqcn: pathInferredNamespace
+			.replace(rootNamespace[1], rootNamespace[0]) // replaces filepath-inferred namespace prefix with actual one
+			.replaceAll('\\\\', '\\') // replaces double backslashes with simple ones
+			.replace(/\\$/, ''), // ensure namespace doesn't ends with a backslash
 	}
 }
 
