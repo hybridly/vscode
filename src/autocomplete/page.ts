@@ -1,10 +1,10 @@
 import { CompletionItemProvider, languages, Range } from 'vscode'
-import { Context } from '../context'
+import { HybridlyContext } from '../context'
 import { getComponentMethods } from '../settings'
 import { log } from '../utils/log'
 import { escapeRegExp } from '../utils/regexp'
 
-export async function registerPageAutocomplete(context: Context) {
+export async function registerPageAutocomplete(context: HybridlyContext) {
 	log.appendLine('Registering page autocomplete provider.')
 
 	const methods = getComponentMethods()

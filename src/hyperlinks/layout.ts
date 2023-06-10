@@ -1,9 +1,9 @@
 import { DocumentLinkProvider, languages, Position, Range } from 'vscode'
-import { Context } from '../context'
+import { HybridlyContext } from '../context'
 import { locateInDocument } from '../utils/locate-in-document'
 import { log } from '../utils/log'
 
-export async function registerLayoutLinkProvider(context: Context) {
+export async function registerLayoutLinkProvider(context: HybridlyContext) {
 	log.appendLine('Registering layout link provider.')
 
 	const provider: DocumentLinkProvider = {

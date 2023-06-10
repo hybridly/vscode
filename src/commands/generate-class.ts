@@ -1,10 +1,10 @@
 /* eslint-disable brace-style */
 import { Position, Range, commands, window } from 'vscode'
-import { Context } from '../context'
+import { ExtensionContext } from '../context'
 import { registerCommand } from '../utils/commands'
 import { generatePhpClass, ClassType } from '../utils/generate-php-class'
 
-export async function registerInsertClassCommand(context: Context) {
+export async function registerInsertClassCommand(context: ExtensionContext) {
 	registerCommand(context, 'generate-class', async({ file, editor }) => {
 		if (editor.document.getText().trim().length) {
 			await commands.executeCommand('hybridly.php.update-namespace')

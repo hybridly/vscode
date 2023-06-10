@@ -1,7 +1,7 @@
 import { ExtensionContext } from 'vscode'
 import { version } from '../package.json'
 import { log } from './utils/log'
-import { loadContext, registerContextUpdater } from './context'
+import { loadHybridlyContext, loadExtensionContext, registerContextUpdater } from './context'
 import { registerPageAutocomplete } from './autocomplete/page'
 import { registerPageLinkProvider } from './hyperlinks/page'
 import { registerLayoutAutocomplete } from './autocomplete/layout'
@@ -13,19 +13,27 @@ import { registerInsertClassCommand } from './commands/generate-class'
 export async function activate(extension: ExtensionContext) {
 	log.appendLine(`Hybridly for Code v${version}\n`)
 
-	const context = await loadContext(extension)
+	const extensionContext = await loadExtensionContext(extension)
+	if (!extensionContext) {
+		return
+	}
+
+	log.appendLine('Loading agnostic features...')
+	await registerUpdateNamespaceCommand(extensionContext)
+	await registerInsertClassCommand(extensionContext)
+
+	const context = await loadHybridlyContext(extensionContext)
 	if (!context) {
 		return
 	}
 
+	log.appendLine('Loading Hybridly features...')
 	await registerContextUpdater(context)
 	await registerPageAutocomplete(context)
 	await registerLayoutAutocomplete(context)
 	await registerPageLinkProvider(context)
 	await registerRouteLinkProvider(context)
 	await registerLayoutLinkProvider(context)
-	await registerUpdateNamespaceCommand(context)
-	await registerInsertClassCommand(context)
 }
 
 export function deactivate() {

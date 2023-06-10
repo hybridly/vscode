@@ -1,5 +1,5 @@
 import { TextEditor, commands, window } from 'vscode'
-import { Context } from '../context'
+import { ExtensionContext } from '../context'
 import { PhpFile, resolvePhpFile } from './psr4'
 import { log } from './log'
 
@@ -10,7 +10,7 @@ interface CommandArguments {
 
 class CommandError extends Error {}
 
-export async function registerCommand(context: Context, name: string, callback: (params: CommandArguments) => Promise<void>) {
+export async function registerCommand(context: ExtensionContext, name: string, callback: (params: CommandArguments) => Promise<void>) {
 	log.appendLine(`Registering command [${name}].`)
 
 	context.extension.subscriptions.push(
@@ -28,7 +28,7 @@ export async function registerCommand(context: Context, name: string, callback: 
 	)
 }
 
-export function assertPhpFile(context: Context): CommandArguments {
+export function assertPhpFile(context: ExtensionContext): CommandArguments {
 	if (!window.activeTextEditor) {
 		throw new CommandError('There is no active editor.')
 	}
@@ -38,6 +38,7 @@ export function assertPhpFile(context: Context): CommandArguments {
 	}
 
 	const file = resolvePhpFile(context.uri, window.activeTextEditor.document.uri)
+	log.appendLine(JSON.stringify(file, null, 2))
 
 	if (!file) {
 		throw new CommandError('Current file could not be resolved as a validd PSR-4 PHP file.')

@@ -1,11 +1,11 @@
 import { DocumentLinkProvider, languages } from 'vscode'
-import { Context } from '../context'
+import { HybridlyContext } from '../context'
 import { getRouteMethods } from '../settings'
 import { locateInDocument } from '../utils/locate-in-document'
 import { log } from '../utils/log'
 import { escapeRegExp } from '../utils/regexp'
 
-export async function registerRouteLinkProvider(context: Context) {
+export async function registerRouteLinkProvider(context: HybridlyContext) {
 	log.appendLine('Registering route link provider.')
 
 	const methods = getRouteMethods()

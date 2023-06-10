@@ -1,8 +1,8 @@
 import { CompletionItemProvider, languages, Range } from 'vscode'
-import { Context } from '../context'
+import { HybridlyContext } from '../context'
 import { log } from '../utils/log'
 
-export async function registerLayoutAutocomplete(context: Context) {
+export async function registerLayoutAutocomplete(context: HybridlyContext) {
 	log.appendLine('Registering layout autocomplete provider.')
 
 	const regexp = /<template\s+layout=(['"])(?<layout>.+)?/

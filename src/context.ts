@@ -1,7 +1,7 @@
 import fs from 'node:fs'
 import path, { resolve } from 'node:path'
 import { execSync } from 'node:child_process'
-import { CompletionItem, CompletionItemKind, ExtensionContext, RelativePattern, Uri, workspace } from 'vscode'
+import { CompletionItem, CompletionItemKind, ExtensionContext as VscodeExtensionContext, RelativePattern, Uri, workspace } from 'vscode'
 import { log } from './utils/log'
 import { actionToLink, ControllerAction } from './utils/psr4'
 import { getPhpPath } from './settings'
@@ -28,11 +28,14 @@ interface Route {
 	controller: ControllerAction
 }
 
-export interface Context {
-	extension: ExtensionContext
+export interface ExtensionContext {
+	extension: VscodeExtensionContext
 	workspace: typeof workspace
 	cwd: string
 	uri: Uri
+}
+
+export interface HybridlyContext extends ExtensionContext {
 	configuration: DynamicConfiguration
 	completions: Completions
 	routes: Route[]
@@ -57,7 +60,8 @@ interface Component {
 	namespace: string
 }
 
-export async function loadContext(extension: ExtensionContext): Promise<Context | false> {
+export async function loadExtensionContext(extension: VscodeExtensionContext): Promise<ExtensionContext | false> {
+	log.appendLine('Loading extension context...')
 	const uri = workspace.workspaceFolders?.[0].uri
 	const cwd = uri?.fsPath
 
@@ -66,6 +70,16 @@ export async function loadContext(extension: ExtensionContext): Promise<Context 
 		return false
 	}
 
+	return {
+		extension,
+		workspace,
+		uri,
+		cwd,
+	}
+}
+
+export async function loadHybridlyContext(extension: ExtensionContext): Promise<HybridlyContext | false> {
+	log.appendLine('Loading Hybridly context...')
 	const config = workspace.getConfiguration('hybridly')
 	const disabled = config.get<boolean>('disable', false)
 	if (!disabled) {
@@ -73,26 +87,24 @@ export async function loadContext(extension: ExtensionContext): Promise<Context 
 		return false
 	}
 
-	const pkg = JSON.parse(fs.readFileSync(path.resolve(cwd, 'package.json'), { encoding: 'utf-8' }))
+	const pkg = JSON.parse(fs.readFileSync(path.resolve(extension.cwd, 'package.json'), { encoding: 'utf-8' }))
 	const deps = { ...pkg.dependencies, ...pkg.devDependencies }
 	if (!deps.hybridly) {
 		log.appendLine('Hybridly was not found in `package.json`.')
 		return false
 	}
 
-	const composer = JSON.parse(fs.readFileSync(path.resolve(cwd, 'composer.json'), { encoding: 'utf-8' }))
+	const composer = JSON.parse(fs.readFileSync(path.resolve(extension.cwd, 'composer.json'), { encoding: 'utf-8' }))
 	if (!composer?.require?.['hybridly/laravel']) {
 		log.appendLine('Hybridly was not found in `composer.json`.')
 		return false
 	}
 
-	const configuration = await loadConfiguration(cwd)
+	const configuration = await loadConfiguration(extension.cwd)
 
 	return {
-		extension,
+		...extension,
 		workspace,
-		cwd,
-		uri,
 		configuration,
 		completions: {
 			views: [],
@@ -102,7 +114,7 @@ export async function loadContext(extension: ExtensionContext): Promise<Context 
 	}
 }
 
-export async function registerContextUpdater(context: Context) {
+export async function registerContextUpdater(context: HybridlyContext) {
 	async function updateAllCompletions() {
 		await updateConfig()
 		await updateCompletions('views', context.configuration.components.views)
