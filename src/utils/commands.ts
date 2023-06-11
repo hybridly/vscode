@@ -41,7 +41,7 @@ export function assertPhpFile(context: ExtensionContext): CommandArguments {
 	log.appendLine(JSON.stringify(file, null, 2))
 
 	if (!file) {
-		throw new CommandError('Current file could not be resolved as a validd PSR-4 PHP file.')
+		throw new CommandError('Current file could not be resolved as a valid PSR-4 PHP file.')
 	}
 
 	const editor = window.activeTextEditor

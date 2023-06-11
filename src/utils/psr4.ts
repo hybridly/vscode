@@ -40,9 +40,20 @@ export function resolvePhpFile(workspace: Uri, file: Uri): PhpFile | undefined {
 	const pathInferredNamespace = namespaceParts.join('\\')
 
 	const rootNamespace = Object.entries(autoload['psr-4'])
-		.map(([key, value]) => [key, value.replaceAll('/', '\\').replace(/\\$/, '')])
-		.find(([_, value]) => pathInferredNamespace.startsWith(value))
-		?? []
+		.find(([_, value]) => relativePath.startsWith(value))
+
+	if (!rootNamespace) {
+		return
+	}
+
+	const normalizeNamespace = (namespace: string) => namespace
+		.replaceAll('/', '\\')
+		.replace(/\\$/, '')
+		.replaceAll('\\\\', '\\')
+
+	const rootPsr4Namespace = rootNamespace[0]
+	const normalizedNamespacePath = normalizeNamespace(rootNamespace[1])
+	const fqcn = normalizeNamespace(pathInferredNamespace.replace(normalizedNamespacePath, rootPsr4Namespace))
 
 	log.appendLine(JSON.stringify({
 		autoload: autoload['psr-4'],
@@ -51,19 +62,19 @@ export function resolvePhpFile(workspace: Uri, file: Uri): PhpFile | undefined {
 		namespaceParts,
 		fileName,
 		className,
-		pathInferredNamespace,
 		rootNamespace,
+		pathInferredNamespace,
+		rootPsr4Namespace,
+		normalizedNamespacePath,
+		fqcn,
 	}, null, 2))
 
 	return {
 		relativePath,
 		fileName,
 		className,
-		rootPsr4Namespace: rootNamespace[0],
-		fqcn: pathInferredNamespace
-			.replace(rootNamespace[1], rootNamespace[0]) // replaces filepath-inferred namespace prefix with actual one
-			.replaceAll('\\\\', '\\') // replaces double backslashes with simple ones
-			.replace(/\\$/, ''), // ensure namespace doesn't ends with a backslash
+		rootPsr4Namespace,
+		fqcn,
 	}
 }
 
