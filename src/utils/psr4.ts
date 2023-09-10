@@ -39,7 +39,7 @@ export function resolvePhpFile(workspace: Uri, file: Uri): PhpFile | undefined {
 	const className = fileName.split('.')[0]
 	const pathInferredNamespace = namespaceParts.join('\\')
 
-	const rootNamespace = Object.entries(autoload['psr-4'])
+	const rootNamespace = Object.entries(autoload['psr-4'] ?? {})
 		.find(([_, value]) => relativePath.startsWith(value))
 
 	if (!rootNamespace) {
