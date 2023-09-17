@@ -41,6 +41,7 @@ export function resolvePhpFile(workspace: Uri, file: Uri): PhpFile | undefined {
 
 	const rootNamespace = Object.entries(autoload['psr-4'] ?? {})
 		.find(([_, value]) => relativePath.startsWith(value))
+		?.flat(1)
 
 	if (!rootNamespace) {
 		return
