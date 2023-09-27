@@ -1,4 +1,4 @@
-class {name}
+{final}class {name}
 {
     public function __construct()
     {

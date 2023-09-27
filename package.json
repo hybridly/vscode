@@ -69,6 +69,10 @@
                 "hybridly.generation.strictTypes": {
                     "type": "boolean",
                     "description": "Whether to declare strict types when generation PHP files."
+                },
+                "hybridly.generation.final": {
+                    "type": "boolean",
+                    "description": "Whether to declare new classes as final when generation PHP files."
                 }
             }
         },
