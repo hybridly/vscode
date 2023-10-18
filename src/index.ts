@@ -9,6 +9,9 @@ import { registerRouteLinkProvider } from './hyperlinks/route'
 import { registerLayoutLinkProvider } from './hyperlinks/layout'
 import { registerUpdateNamespaceCommand } from './commands/update-namespace'
 import { registerInsertClassCommand } from './commands/generate-class'
+import { registerRunCurrentTestCommand } from './commands/run-current-test'
+import { registerRunTestsCommand } from './commands/run-tests'
+import { registerRunTestsInCurrentFileCommand } from './commands/run-current-file'
 
 export async function activate(extension: ExtensionContext) {
 	log.appendLine(`Hybridly for Code v${version}\n`)
@@ -21,6 +24,9 @@ export async function activate(extension: ExtensionContext) {
 	log.appendLine('Loading agnostic features...')
 	await registerUpdateNamespaceCommand(extensionContext)
 	await registerInsertClassCommand(extensionContext)
+	await registerRunCurrentTestCommand(extensionContext)
+	await registerRunTestsCommand(extensionContext)
+	await registerRunTestsInCurrentFileCommand(extensionContext)
 
 	const context = await loadHybridlyContext(extensionContext)
 	if (!context) {

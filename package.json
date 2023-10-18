@@ -88,7 +88,63 @@
                 "title": "Generate class",
                 "category": "Hybridly",
                 "enablement": "editorLangId == php"
+            },
+            {
+                "command": "hybridly.php.run-current-test",
+                "title": "Run current test",
+                "category": "Hybridly",
+                "enablement": "editorLangId == php"
+            },
+            {
+                "command": "hybridly.php.run-current-file",
+                "title": "Run tests in current file",
+                "category": "Hybridly",
+                "enablement": "editorLangId == php"
+            },
+            {
+                "command": "hybridly.php.run-tests",
+                "title": "Run all tests",
+                "category": "Hybridly",
+                "enablement": "editorLangId == php"
             }
+        ],
+        "keybindings": [
+            {
+                "key": "f6",
+                "command": "hybridly.php.run-current-test",
+                "when": "editorLangId == php"
+            },
+            {
+                "key": "f7",
+                "command": "hybridly.php.run-current-file",
+                "when": "editorLangId == php"
+            },
+            {
+                "key": "f8",
+                "command": "hybridly.php.run-tests",
+                "when": "editorLangId == php"
+            }
+        ],
+        "problemMatchers": [
+            {
+                "name": "pest",
+                "owner": "php",
+                "fileLocation": "absolute",
+                "pattern": [
+                    {
+                        "regexp": "^  (.*)\\.$",
+                        "message": 1
+                    },
+                    {
+                        "regexp": "at (.*):(\\d+)$",
+                        "file": 1,
+                        "line": 2
+                    }
+                ]
+            }
+        ],
+        "taskDefinitions": [
+            { "type": "tests" }
         ]
     },
     "scripts": {

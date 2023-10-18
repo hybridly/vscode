@@ -5,6 +5,7 @@ import { CompletionItem, CompletionItemKind, ExtensionContext as VscodeExtension
 import { log } from './utils/log'
 import { actionToLink, ControllerAction } from './utils/psr4'
 import { getPhpPath } from './settings'
+import { hasComposerPackage } from './utils/composer'
 
 interface HybridlyCompletionItem {
 	identifier: string
@@ -94,8 +95,7 @@ export async function loadHybridlyContext(extension: ExtensionContext): Promise<
 		return false
 	}
 
-	const composer = JSON.parse(fs.readFileSync(path.resolve(extension.cwd, 'composer.json'), { encoding: 'utf-8' }))
-	if (!composer?.require?.['hybridly/laravel']) {
+	if (!hasComposerPackage(extension.cwd, 'hybridly/laravel')) {
 		log.appendLine('Hybridly was not found in `composer.json`.')
 		return false
 	}
