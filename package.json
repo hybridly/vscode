@@ -168,7 +168,7 @@
         "@antfu/ni": "^0.21.8",
         "@innocenzi/eslint-config": "^0.21.0",
         "@types/node": "^18.18.6",
-        "@types/vscode": "^1.83.1",
+        "@types/vscode": "^1.73.0",
         "@vscode/vsce": "^2.21.1",
         "bumpp": "^9.2.0",
         "eslint": "^8.51.0",
