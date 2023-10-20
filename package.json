@@ -15,7 +15,9 @@
         "laravel",
         "vite",
         "php",
-        "class generation"
+        "class generation",
+        "pestphp",
+        "pest"
     ],
     "license": "MIT",
     "repository": {
