@@ -22,15 +22,16 @@ export interface PhpFile {
 	fqcn: string
 }
 
-export function getComposerAutoload(workspace: Uri): Autoload {
+export function getComposerAutoloadPsr4(workspace: Uri): Autoload['psr-4'] {
 	// TODO: cache
 	const composer = JSON.parse(fs.readFileSync(path.resolve(workspace.fsPath, 'composer.json'), { encoding: 'utf-8' }))
 
-	return composer.autoload
+	return { ...composer?.autoload?.['psr-4'] ?? {}, ...composer?.['autoload-dev']?.['psr-4'] ?? {} }
 }
 
 export function resolvePhpFile(workspace: Uri, file: Uri): PhpFile | undefined {
-	const autoload = getComposerAutoload(workspace)
+	log.appendLine(`Resolving ${file.fsPath}`)
+	const psr4 = getComposerAutoloadPsr4(workspace)
 
 	const relativePath = path.relative(workspace.fsPath, file.fsPath)
 	const pathParts = relativePath.split(path.sep)
@@ -39,11 +40,12 @@ export function resolvePhpFile(workspace: Uri, file: Uri): PhpFile | undefined {
 	const className = fileName.split('.')[0]
 	const pathInferredNamespace = namespaceParts.join('\\')
 
-	const rootNamespace = Object.entries(autoload['psr-4'] ?? {})
+	const rootNamespace = Object.entries(psr4)
 		.find(([_, value]) => relativePath.startsWith(value))
 		?.flat(1)
 
 	if (!rootNamespace) {
+		log.appendLine(`No root namespace found for ${file.fsPath}`)
 		return
 	}
 
@@ -57,7 +59,7 @@ export function resolvePhpFile(workspace: Uri, file: Uri): PhpFile | undefined {
 	const fqcn = normalizeNamespace(pathInferredNamespace.replace(normalizedNamespacePath, rootPsr4Namespace))
 
 	log.appendLine(JSON.stringify({
-		autoload: autoload['psr-4'],
+		psr4,
 		relativePath,
 		pathParts,
 		namespaceParts,
@@ -80,11 +82,11 @@ export function resolvePhpFile(workspace: Uri, file: Uri): PhpFile | undefined {
 }
 
 export function fqcnToFile(workspace: Uri, fqcn: string): string {
-	const autoload = getComposerAutoload(workspace)
+	const psr4 = getComposerAutoloadPsr4(workspace)
 
 	fqcn = fqcn.replaceAll('\\\\', '\\')
 
-	Object.entries(autoload['psr-4']).forEach(([key, value]) => {
+	Object.entries(psr4).forEach(([key, value]) => {
 		if (fqcn.startsWith(key)) {
 			fqcn = fqcn.replace(key, value)
 		}
