@@ -31,6 +31,10 @@ export function generatesFinal() {
 	return workspace.getConfiguration('hybridly').get<boolean>('generation.final') || false
 }
 
+export function getTestDirectory() {
+	return workspace.getConfiguration('hybridly').get<string>('test.directory')
+}
+
 export function getPhpPath(): string {
 	return workspace.getConfiguration('php.validate').get<string>('executablePath')
 		?? workspace.getConfiguration('hybridly.php').get<string>('executablePath')
