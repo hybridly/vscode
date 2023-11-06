@@ -5,8 +5,9 @@ import classStub from './stubs/class.txt'
 import enumStub from './stubs/enum.txt'
 import interfaceStub from './stubs/interface.txt'
 import traitStub from './stubs/trait.txt'
+import invokableClassStub from './stubs/invokable-class.txt'
 
-export type ClassType = 'class' | 'enum' | 'interface' | 'trait'
+export type ClassType = 'class' | 'invokable-class' | 'enum' | 'interface' | 'trait'
 export interface PreludeOptions {
 	final?: boolean
 	strictTypes?: boolean
@@ -16,10 +17,11 @@ export interface PreludeOptions {
 export function generatePhpClass(editor: TextEditor, file: PhpFile, type: ClassType) {
 	const prelude = generatePhpPrelude(editor, file, { strictTypes: true, newLine: true })
 	const stub = {
-		class: classStub,
-		enum: enumStub,
-		interface: interfaceStub,
-		trait: traitStub,
+		'class': classStub,
+		'enum': enumStub,
+		'interface': interfaceStub,
+		'trait': traitStub,
+		'invokable-class': invokableClassStub,
 	}[type]
 		.replaceAll('{name}', file.className)
 		.replaceAll('{final}', generatesFinal() ? 'final ' : '')

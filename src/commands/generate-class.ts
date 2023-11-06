@@ -14,6 +14,7 @@ export async function registerInsertClassCommand(context: ExtensionContext) {
 		const type = await window.showQuickPick<{ label: string; value: ClassType }>(
 			[
 				{ label: 'Class', value: 'class' },
+				{ label: 'Invokable class', value: 'invokable-class' },
 				{ label: 'Trait', value: 'trait' },
 				{ label: 'Interface', value: 'interface' },
 				{ label: 'Enum', value: 'enum' },

@@ -1,0 +1,7 @@
+{final}class {name}
+{
+    public function __invoke()
+    {
+        //
+    }
+}
