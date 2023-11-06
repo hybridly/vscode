@@ -8,7 +8,7 @@ export async function registerPageAutocomplete(context: HybridlyContext) {
 	log.appendLine('Registering page autocomplete provider.')
 
 	const methods = getSetting<string[]>('componentMethods')
-	const regexp = new RegExp(`(?:${methods.map(escapeRegExp).join('|')})\\(\\s*([\\'"])(?<component>.+)?(?:(\\1)\\s*[\\),])?`)
+	const regexp = new RegExp(`(?:${methods.map(escapeRegExp).join('|')})\\(\\s*(?:.+\:)?\\s*([\\'"])(?<component>.+)?(?:(\\1)\\s*[\\),])?`)
 	const provider: CompletionItemProvider = {
 		async provideCompletionItems(document, position) {
 			const lineContentUpToCursor = document.getText(new Range(position.line - 1, 0, position.line, position.character))

@@ -66,6 +66,7 @@
                         "hybridly",
                         "view",
                         "component",
+                        "dialog",
                         "hybridly()->view",
                         "hybridly()->component",
                         "partial_headers",
