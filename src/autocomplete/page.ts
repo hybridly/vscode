@@ -1,13 +1,13 @@
 import { CompletionItemProvider, languages, Range } from 'vscode'
 import { HybridlyContext } from '../context'
-import { getComponentMethods } from '../settings'
 import { log } from '../utils/log'
 import { escapeRegExp } from '../utils/regexp'
+import { getSetting } from '../settings'
 
 export async function registerPageAutocomplete(context: HybridlyContext) {
 	log.appendLine('Registering page autocomplete provider.')
 
-	const methods = getComponentMethods()
+	const methods = getSetting<string[]>('componentMethods')
 	const regexp = new RegExp(`(?:${methods.map(escapeRegExp).join('|')})\\(\\s*([\\'"])(?<component>.+)?(?:(\\1)\\s*[\\),])?`)
 	const provider: CompletionItemProvider = {
 		async provideCompletionItems(document, position) {

@@ -1,38 +1,13 @@
 import { workspace } from 'vscode'
+import { contributes } from '../package.json'
 
-export function getComponentMethods() {
-	return [
-		'hybridly',
-		'view',
-		'component',
-		'hybridly()->view',
-		'hybridly()->component',
-		'partial_headers',
-		'assertHybridView',
-		...workspace.getConfiguration('hybridly').get<string[]>('componentMethods') || [],
-	]
-}
+type SettingName = Replace<keyof typeof contributes.configuration.properties, 'hybridly.', ''>
+type Replace<Original extends string, Pattern extends string, Replacement extends string> = Original extends `${infer Prefix}${Pattern}${infer Suffix}`
+	? `${Prefix}${Replacement}${Suffix}`
+	: Original
 
-export function getRouteMethods() {
-	return [
-		'route',
-		'to_route',
-		'router.to',
-		'base',
-		...workspace.getConfiguration('hybridly').get<string[]>('routeMethods') || [],
-	]
-}
-
-export function generatesStrictTypes() {
-	return workspace.getConfiguration('hybridly').get<boolean>('generation.strictTypes') || false
-}
-
-export function generatesFinal() {
-	return workspace.getConfiguration('hybridly').get<boolean>('generation.final') || false
-}
-
-export function getTestDirectory() {
-	return workspace.getConfiguration('hybridly').get<string>('test.directory')
+export function getSetting<ReturnType = string>(setting: SettingName): ReturnType {
+	return workspace.getConfiguration('hybridly').get(setting) as ReturnType
 }
 
 export function getPhpPath(): string {

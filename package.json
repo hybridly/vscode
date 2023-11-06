@@ -62,18 +62,35 @@
                 },
                 "hybridly.componentMethods": {
                     "type": "array",
+                    "default": [
+                        "hybridly",
+                        "view",
+                        "component",
+                        "hybridly()->view",
+                        "hybridly()->component",
+                        "partial_headers",
+                        "assertHybridView"
+                    ],
                     "description": "Additional methods which first parameter should link to page components."
                 },
                 "hybridly.routeMethods": {
                     "type": "array",
+                    "default": [
+                        "route",
+                        "to_route",
+                        "router.to",
+                        "base"
+                    ],
                     "description": "Additional methods which first parameter correspond to a route name."
                 },
                 "hybridly.generation.strictTypes": {
                     "type": "boolean",
+                    "default": false,
                     "description": "Whether to declare strict types when generation PHP files."
                 },
                 "hybridly.generation.final": {
                     "type": "boolean",
+                    "default": false,
                     "description": "Whether to declare new classes as final when generation PHP files."
                 },
                 "hybridly.test.directory": {

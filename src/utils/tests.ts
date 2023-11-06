@@ -1,9 +1,9 @@
 import path from 'node:path'
 import { ShellExecution, Task, TaskScope, commands, tasks } from 'vscode'
-import { getTestDirectory } from '../settings'
+import { getSetting } from '../settings'
 
 export async function runTestsTask(cwd: string, args: string = '') {
-	const testDirectory = getTestDirectory()
+	const testDirectory = getSetting('test.directory')
 
 	if (testDirectory && !args.includes('--test-directory')) {
 		args = `--test-directory=${testDirectory} ${args}`

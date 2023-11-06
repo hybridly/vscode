@@ -1,6 +1,6 @@
 import { DocumentLinkProvider, languages } from 'vscode'
 import { HybridlyContext } from '../context'
-import { getComponentMethods } from '../settings'
+import { getSetting } from '../settings'
 import { locateInDocument } from '../utils/locate-in-document'
 import { log } from '../utils/log'
 import { escapeRegExp } from '../utils/regexp'
@@ -8,7 +8,7 @@ import { escapeRegExp } from '../utils/regexp'
 export async function registerPageLinkProvider(context: HybridlyContext) {
 	log.appendLine('Registering page link provider.')
 
-	const methods = getComponentMethods()
+	const methods = getSetting<string[]>('componentMethods')
 	const provider: DocumentLinkProvider = {
 		async provideDocumentLinks(document) {
 			const links = locateInDocument(
