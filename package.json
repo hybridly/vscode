@@ -120,7 +120,7 @@
                 "enablement": "editorLangId == php"
             },
             {
-                "command": "hybridly.php.run-current-file",
+                "command": "hybridly.php.run-current-test-file",
                 "title": "Run tests in current file",
                 "category": "Hybridly",
                 "enablement": "editorLangId == php"
@@ -140,7 +140,7 @@
             },
             {
                 "key": "f7",
-                "command": "hybridly.php.run-current-file",
+                "command": "hybridly.php.run-current-test-file",
                 "when": "editorLangId == php"
             },
             {

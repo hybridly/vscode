@@ -11,7 +11,7 @@ import { registerUpdateNamespaceCommand } from './commands/update-namespace'
 import { registerInsertClassCommand } from './commands/generate-class'
 import { registerRunCurrentTestCommand } from './commands/run-current-test'
 import { registerRunTestsCommand } from './commands/run-tests'
-import { registerRunTestsInCurrentFileCommand } from './commands/run-current-file'
+import { registerRunCurrentTestFileCommand } from './commands/run-current-test-file'
 
 export async function activate(extension: ExtensionContext) {
 	log.appendLine(`Hybridly for Code v${version}\n`)
@@ -26,7 +26,7 @@ export async function activate(extension: ExtensionContext) {
 	await registerInsertClassCommand(extensionContext)
 	await registerRunCurrentTestCommand(extensionContext)
 	await registerRunTestsCommand(extensionContext)
-	await registerRunTestsInCurrentFileCommand(extensionContext)
+	await registerRunCurrentTestFileCommand(extensionContext)
 
 	const context = await loadHybridlyContext(extensionContext)
 	if (!context) {
