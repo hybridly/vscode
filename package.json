@@ -97,6 +97,11 @@
                 "hybridly.test.directory": {
                     "type": "string",
                     "description": "Relative path to the test directory, if custom."
+                },
+                "hybridly.test.retry": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Prioritize previously-failed tests when running them."
                 }
             }
         },
@@ -112,6 +117,11 @@
                 "title": "Generate class",
                 "category": "Hybridly",
                 "enablement": "editorLangId == php"
+            },
+            {
+                "command": "hybridly.run-previous-tests",
+                "title": "Run previous tests",
+                "category": "Hybridly"
             },
             {
                 "command": "hybridly.php.run-current-test",
@@ -147,6 +157,10 @@
                 "key": "f8",
                 "command": "hybridly.php.run-tests",
                 "when": "editorLangId == php"
+            },
+            {
+                "key": "f9",
+                "command": "hybridly.run-previous-tests"
             }
         ],
         "problemMatchers": [

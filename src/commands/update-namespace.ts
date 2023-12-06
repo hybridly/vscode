@@ -1,10 +1,10 @@
 import { Position, Range } from 'vscode'
 import { ExtensionContext } from '../context'
-import { registerCommand } from '../utils/commands'
+import { registerPhpFileCommand } from '../utils/commands'
 import { generatePhpPrelude } from '../utils/generate-php-class'
 
 export async function registerUpdateNamespaceCommand(context: ExtensionContext) {
-	registerCommand(context, 'update-namespace', async({ file, editor }) => {
+	registerPhpFileCommand(context, 'update-namespace', async({ file, editor }) => {
 		const currentlySpecifiedNamespace = editor.document.getText(
 			new Range(new Position(0, 0), new Position(6, 0)),
 		).match(/namespace [^;]+;/)

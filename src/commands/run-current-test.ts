@@ -1,6 +1,6 @@
 /* eslint-disable brace-style */
 import { ExtensionContext } from '../context'
-import { registerCommand } from '../utils/commands'
+import { registerPhpFileCommand } from '../utils/commands'
 import { hasPest } from '../utils/composer'
 import { runTestsTask } from '../utils/tests'
 
@@ -9,7 +9,7 @@ export async function registerRunCurrentTestCommand(context: ExtensionContext) {
 		return
 	}
 
-	registerCommand(context, 'run-current-test', async({ editor }) => {
+	registerPhpFileCommand(context, 'run-current-test', async({ editor }) => {
 		let line = editor.selection.active.line
 		let method: string | undefined
 

@@ -10,21 +10,31 @@ interface CommandArguments {
 
 class CommandError extends Error {}
 
-export async function registerCommand(context: ExtensionContext, name: string, callback: (params: CommandArguments) => Promise<void>) {
+function registerCommand(name: string, cb: Function) {
 	log.appendLine(`Registering command [${name}].`)
 
-	context.extension.subscriptions.push(
-		commands.registerCommand(`hybridly.php.${name}`, async() => {
-			try {
-				await callback(assertPhpFile(context))
-			} catch (error) {
-				if (error instanceof CommandError) {
-					window.showWarningMessage(error.message)
-				} else {
-					throw error
-				}
+	return commands.registerCommand(name, async() => {
+		try {
+			await cb()
+		} catch (error) {
+			if (error instanceof CommandError) {
+				window.showWarningMessage(error.message)
+			} else {
+				throw error
 			}
-		}),
+		}
+	})
+}
+
+export async function registerEditorCommand(context: ExtensionContext, name: string, callback: (editor?: TextEditor) => Promise<void>) {
+	context.extension.subscriptions.push(
+		registerCommand(`hybridly.${name}`, async() => await callback(window.activeTextEditor)),
+	)
+}
+
+export async function registerPhpFileCommand(context: ExtensionContext, name: string, callback: (params: CommandArguments) => Promise<void>) {
+	context.extension.subscriptions.push(
+		registerCommand(`hybridly.php.${name}`, async() => await callback(assertPhpFile(context))),
 	)
 }
 
