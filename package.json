@@ -138,8 +138,7 @@
             {
                 "command": "hybridly.php.run-tests",
                 "title": "Run all tests",
-                "category": "Hybridly",
-                "enablement": "editorLangId == php"
+                "category": "Hybridly"
             }
         ],
         "keybindings": [
