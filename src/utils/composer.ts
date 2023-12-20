@@ -4,9 +4,24 @@ import { window } from 'vscode'
 import { log } from './log'
 
 let hasLoggedPest = false
+let hasLoggedComposer = false
 const caches = new Map<string, any>()
 
+export function hasComposer(cwd: string) {
+	return fs.existsSync(path.resolve(cwd, 'composer.json'))
+}
+
 export function getComposer(cwd: string) {
+	if (!hasComposer(cwd)) {
+		if (!hasLoggedComposer) {
+			log.appendLine('This project is not using Composer.')
+			window.showErrorMessage('This project is not using Composer.')
+			hasLoggedComposer = true
+		}
+
+		return
+	}
+
 	const key = `composer_${cwd}`
 	if (!caches.has(key)) {
 		caches.set(key, JSON.parse(fs.readFileSync(path.resolve(cwd, 'composer.json'), { encoding: 'utf-8' })))
