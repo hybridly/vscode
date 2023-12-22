@@ -143,17 +143,17 @@
         ],
         "keybindings": [
             {
-                "key": "f6",
+                "key": "cmd+t cmd+c",
                 "command": "hybridly.php.run-current-test",
                 "when": "editorLangId == php"
             },
             {
-                "key": "f7",
+                "key": "cmd+t cmd+f",
                 "command": "hybridly.php.run-current-test-file",
                 "when": "editorLangId == php"
             },
             {
-                "key": "f8",
+                "key": "cmd+t cmd+a",
                 "command": "hybridly.php.run-tests",
                 "when": "editorLangId == php"
             },
