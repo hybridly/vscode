@@ -15,7 +15,7 @@ export async function registerRunCurrentTestCommand(context: ExtensionContext) {
 
 		while (line > 0) {
 			const lineText = editor.document.lineAt(line).text
-			const match = lineText.match(/^\s*(?:it|test)\(([^,)]+)/m)
+			const match = lineText.match(/^\s*(?:it|test)\((.+['"])[,)]/m)
 
 			if (match) {
 				method = match[1]
