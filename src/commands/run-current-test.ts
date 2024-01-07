@@ -5,11 +5,11 @@ import { hasPest } from '../utils/composer'
 import { runTestsTask } from '../utils/tests'
 
 export async function registerRunCurrentTestCommand(context: ExtensionContext) {
-	if (!hasPest(context.cwd)) {
-		return
-	}
-
 	registerPhpFileCommand(context, 'run-current-test', async({ editor }) => {
+		if (!hasPest(context.cwd)) {
+			return
+		}
+
 		let line = editor.selection.active.line
 		let method: string | undefined
 
