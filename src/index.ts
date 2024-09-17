@@ -13,6 +13,7 @@ import { registerRunCurrentTestCommand } from './commands/run-current-test'
 import { registerRunTestsCommand } from './commands/run-tests'
 import { registerRunCurrentTestFileCommand } from './commands/run-current-test-file'
 import { registerRunPreviousTestCommand } from './commands/run-previous-test'
+import { registerRunDirectoryTestsCommand } from './commands/run-directory-tests'
 
 export async function activate(extension: ExtensionContext) {
 	log.appendLine(`Hybridly for Code v${version}\n`)
@@ -29,6 +30,7 @@ export async function activate(extension: ExtensionContext) {
 	await registerRunTestsCommand(extensionContext)
 	await registerRunCurrentTestFileCommand(extensionContext)
 	await registerRunPreviousTestCommand(extensionContext)
+	await registerRunDirectoryTestsCommand(extensionContext)
 
 	const context = await loadHybridlyContext(extensionContext)
 	if (!context) {

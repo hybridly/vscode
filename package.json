@@ -141,6 +141,11 @@
                 "enablement": "editorLangId == php"
             },
             {
+                "command": "hybridly.php.run-directory-tests",
+                "title": "Run tests in current directory",
+                "category": "Hybridly"
+            },
+            {
                 "command": "hybridly.php.run-tests",
                 "title": "Run all tests",
                 "category": "Hybridly"
@@ -160,6 +165,11 @@
             {
                 "key": "cmd+t cmd+a",
                 "command": "hybridly.php.run-tests",
+                "when": "editorLangId == php"
+            },
+            {
+                "key": "cmd+t cmd+d",
+                "command": "hybridly.php.run-directory-tests",
                 "when": "editorLangId == php"
             },
             {
