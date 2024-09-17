@@ -102,6 +102,11 @@
                     "type": "boolean",
                     "default": true,
                     "description": "Prioritize previously-failed tests when running them."
+                },
+                "hybridly.test.bail": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Stop execution upon first non-passing test."
                 }
             }
         },

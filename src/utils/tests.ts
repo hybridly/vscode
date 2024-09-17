@@ -21,6 +21,7 @@ export async function runPreviousTestTask() {
 export async function runTestsTask(cwd: string, args: string = '') {
 	const testDirectory = getSetting('test.directory')
 	const retries = getSetting('test.retry')
+	const bail = getSetting('test.bail')
 
 	if (testDirectory && !args.includes('--test-directory')) {
 		args += ` --test-directory=${testDirectory} ${args}`
@@ -28,6 +29,10 @@ export async function runTestsTask(cwd: string, args: string = '') {
 
 	if (retries && !args.includes('--retry')) {
 		args += ' --retry'
+	}
+
+	if (bail && !args.includes('--bail')) {
+		args += ' --bail'
 	}
 
 	const binaryName = process.platform === 'win32' ? 'pest.bat' : 'pest'
