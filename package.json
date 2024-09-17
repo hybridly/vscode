@@ -107,6 +107,11 @@
                     "type": "boolean",
                     "default": true,
                     "description": "Stop execution upon first non-passing test."
+                },
+                "hybridly.test.arguments": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Add arbitrary arguments to all test commands."
                 }
             }
         },

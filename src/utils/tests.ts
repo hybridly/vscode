@@ -22,6 +22,7 @@ export async function runTestsTask(cwd: string, args: string = '') {
 	const testDirectory = getSetting('test.directory')
 	const retries = getSetting('test.retry')
 	const bail = getSetting('test.bail')
+	const settingArgs = getSetting('test.arguments')
 
 	if (testDirectory && !args.includes('--test-directory')) {
 		args += ` --test-directory=${testDirectory} ${args}`
@@ -33,6 +34,10 @@ export async function runTestsTask(cwd: string, args: string = '') {
 
 	if (bail && !args.includes('--bail')) {
 		args += ' --bail'
+	}
+
+	if (settingArgs) {
+		args += ` ${settingArgs}`
 	}
 
 	const binaryName = process.platform === 'win32' ? 'pest.bat' : 'pest'
