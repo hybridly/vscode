@@ -11,12 +11,6 @@ export async function registerRunDirectoryTestsCommand(context: ExtensionContext
 			return
 		}
 
-		console.log({
-			dir: dirname(ctx.editor.document.fileName),
-			file: (ctx.editor.document.fileName),
-			context: ctx
-		})
-
 		await runTestsTask(context.cwd, dirname(ctx.file.relativePath))
 	})
 }
