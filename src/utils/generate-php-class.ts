@@ -1,6 +1,6 @@
-import { TextEditor } from 'vscode'
+import type { TextEditor } from 'vscode'
 import { getSetting } from '../settings'
-import { PhpFile } from './psr4'
+import type { PhpFile } from './psr4'
 import classStub from './stubs/class.txt'
 import enumStub from './stubs/enum.txt'
 import interfaceStub from './stubs/interface.txt'

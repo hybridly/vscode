@@ -1,236 +1,237 @@
 {
-    "publisher": "innocenzi",
-    "name": "vscode-hybridly",
-    "displayName": "Hybridly",
-    "version": "0.8.0",
-    "private": true,
-    "preview": true,
-    "packageManager": "pnpm@9.4.0",
-    "description": "Visual Studio Code extension for Hybridly",
-    "keywords": [
-        "hybridly",
-        "inertia",
-        "inertiajs",
-        "vue",
-        "laravel",
-        "vite",
-        "php",
-        "class generation",
-        "pestphp",
-        "pest"
-    ],
-    "license": "MIT",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/hybridly/vscode"
-    },
-    "funding": "https://github.com/sponsors/innocenzi",
-    "author": "Enzo Innocenzi <enzo@innocenzi.dev>",
-    "homepage": "https://github.com/hybridly/vscode#readme",
-    "bugs": {
-        "url": "https://github.com/hybridly/vscode/issues"
-    },
-    "sponsor": {
-        "url": "https://github.com/sponsors/innocenzi"
-    },
-    "categories": [
-        "Other"
-    ],
-    "files": [
-        "dist"
-    ],
-    "main": "./dist/index.js",
-    "icon": "res/icon.png",
-    "galleryBanner": {
-        "color": "#252525",
-        "theme": "dark"
-    },
-    "engines": {
-        "vscode": "^1.73.0"
-    },
-    "activationEvents": [
-        "onStartupFinished"
-    ],
-    "contributes": {
-        "configuration": {
-            "title": "Hybridly",
-            "properties": {
-                "hybridly.disable": {
-                    "type": "boolean",
-                    "default": "false",
-                    "description": "Disables the extension."
-                },
-                "hybridly.componentMethods": {
-                    "type": "array",
-                    "default": [
-                        "hybridly",
-                        "view",
-                        "component",
-                        "dialog",
-                        "hybridly()->view",
-                        "hybridly()->component",
-                        "partial_headers",
-                        "assertHybridView"
-                    ],
-                    "description": "Additional methods which first parameter should link to page components."
-                },
-                "hybridly.routeMethods": {
-                    "type": "array",
-                    "default": [
-                        "route",
-                        "to_route",
-                        "router.to",
-                        "base"
-                    ],
-                    "description": "Additional methods which first parameter correspond to a route name."
-                },
-                "hybridly.generation.strictTypes": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Whether to declare strict types when generation PHP files."
-                },
-                "hybridly.generation.final": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Whether to declare new classes as final when generation PHP files."
-                },
-                "hybridly.test.directory": {
-                    "type": "string",
-                    "description": "Relative path to the test directory, if custom."
-                },
-                "hybridly.test.retry": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Prioritize previously-failed tests when running them."
-                },
-                "hybridly.test.bail": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Stop execution upon first non-passing test."
-                },
-                "hybridly.test.arguments": {
-                    "type": "string",
-                    "default": "",
-                    "description": "Add arbitrary arguments to all test commands."
-                }
-            }
+  "publisher": "innocenzi",
+  "name": "vscode-hybridly",
+  "displayName": "Hybridly",
+  "version": "0.8.0",
+  "private": true,
+  "preview": true,
+  "packageManager": "pnpm@9.10.0",
+  "description": "Visual Studio Code extension for Hybridly",
+  "author": "Enzo Innocenzi <enzo@innocenzi.dev>",
+  "license": "MIT",
+  "funding": "https://github.com/sponsors/innocenzi",
+  "homepage": "https://github.com/hybridly/vscode#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hybridly/vscode"
+  },
+  "bugs": {
+    "url": "https://github.com/hybridly/vscode/issues"
+  },
+  "keywords": [
+    "hybridly",
+    "inertia",
+    "inertiajs",
+    "vue",
+    "laravel",
+    "vite",
+    "php",
+    "class generation",
+    "pestphp",
+    "pest"
+  ],
+  "sponsor": {
+    "url": "https://github.com/sponsors/innocenzi"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./dist/index.js",
+  "icon": "res/icon.png",
+  "files": [
+    "dist"
+  ],
+  "galleryBanner": {
+    "color": "#252525",
+    "theme": "dark"
+  },
+  "engines": {
+    "vscode": "^1.73.0"
+  },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "configuration": {
+      "title": "Hybridly",
+      "properties": {
+        "hybridly.disable": {
+          "type": "boolean",
+          "default": "false",
+          "description": "Disables the extension."
         },
-        "commands": [
-            {
-                "command": "hybridly.php.update-namespace",
-                "title": "Update the current namespace",
-                "category": "Hybridly",
-                "enablement": "editorLangId == php"
-            },
-            {
-                "command": "hybridly.php.generate-class",
-                "title": "Generate class",
-                "category": "Hybridly",
-                "enablement": "editorLangId == php"
-            },
-            {
-                "command": "hybridly.run-previous-tests",
-                "title": "Run previous tests",
-                "category": "Hybridly"
-            },
-            {
-                "command": "hybridly.php.run-current-test",
-                "title": "Run current test",
-                "category": "Hybridly",
-                "enablement": "editorLangId == php"
-            },
-            {
-                "command": "hybridly.php.run-current-test-file",
-                "title": "Run tests in current file",
-                "category": "Hybridly",
-                "enablement": "editorLangId == php"
-            },
-            {
-                "command": "hybridly.php.run-directory-tests",
-                "title": "Run tests in current directory",
-                "category": "Hybridly"
-            },
-            {
-                "command": "hybridly.php.run-tests",
-                "title": "Run all tests",
-                "category": "Hybridly"
-            }
-        ],
-        "keybindings": [
-            {
-                "key": "cmd+t cmd+c",
-                "command": "hybridly.php.run-current-test",
-                "when": "editorLangId == php"
-            },
-            {
-                "key": "cmd+t cmd+f",
-                "command": "hybridly.php.run-current-test-file",
-                "when": "editorLangId == php"
-            },
-            {
-                "key": "cmd+t cmd+a",
-                "command": "hybridly.php.run-tests",
-                "when": "editorLangId == php"
-            },
-            {
-                "key": "cmd+t cmd+d",
-                "command": "hybridly.php.run-directory-tests",
-                "when": "editorLangId == php"
-            },
-            {
-                "key": "f9",
-                "command": "hybridly.run-previous-tests"
-            }
-        ],
-        "problemMatchers": [
-            {
-                "name": "pest",
-                "owner": "php",
-                "fileLocation": "absolute",
-                "pattern": [
-                    {
-                        "regexp": "^  (.*)\\.$",
-                        "message": 1
-                    },
-                    {
-                        "regexp": "at (.*):(\\d+)$",
-                        "file": 1,
-                        "line": 2
-                    }
-                ]
-            }
-        ],
-        "taskDefinitions": [
-            {
-                "type": "tests"
-            }
+        "hybridly.componentMethods": {
+          "type": "array",
+          "default": [
+            "hybridly",
+            "view",
+            "component",
+            "dialog",
+            "hybridly()->view",
+            "hybridly()->component",
+            "partial_headers",
+            "assertHybridView"
+          ],
+          "description": "Additional methods which first parameter should link to page components."
+        },
+        "hybridly.routeMethods": {
+          "type": "array",
+          "default": [
+            "route",
+            "to_route",
+            "router.to",
+            "base"
+          ],
+          "description": "Additional methods which first parameter correspond to a route name."
+        },
+        "hybridly.generation.strictTypes": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether to declare strict types when generation PHP files."
+        },
+        "hybridly.generation.final": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether to declare new classes as final when generation PHP files."
+        },
+        "hybridly.test.directory": {
+          "type": "string",
+          "description": "Relative path to the test directory, if custom."
+        },
+        "hybridly.test.retry": {
+          "type": "boolean",
+          "default": true,
+          "description": "Prioritize previously-failed tests when running them."
+        },
+        "hybridly.test.bail": {
+          "type": "boolean",
+          "default": true,
+          "description": "Stop execution upon first non-passing test."
+        },
+        "hybridly.test.arguments": {
+          "type": "string",
+          "default": "",
+          "description": "Add arbitrary arguments to all test commands."
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "hybridly.php.update-namespace",
+        "title": "Update the current namespace",
+        "category": "Hybridly",
+        "enablement": "editorLangId == php"
+      },
+      {
+        "command": "hybridly.php.generate-class",
+        "title": "Generate class",
+        "category": "Hybridly",
+        "enablement": "editorLangId == php"
+      },
+      {
+        "command": "hybridly.run-previous-tests",
+        "title": "Run previous tests",
+        "category": "Hybridly"
+      },
+      {
+        "command": "hybridly.php.run-current-test",
+        "title": "Run current test",
+        "category": "Hybridly",
+        "enablement": "editorLangId == php"
+      },
+      {
+        "command": "hybridly.php.run-current-test-file",
+        "title": "Run tests in current file",
+        "category": "Hybridly",
+        "enablement": "editorLangId == php"
+      },
+      {
+        "command": "hybridly.php.run-directory-tests",
+        "title": "Run tests in current directory",
+        "category": "Hybridly"
+      },
+      {
+        "command": "hybridly.php.run-tests",
+        "title": "Run all tests",
+        "category": "Hybridly"
+      }
+    ],
+    "keybindings": [
+      {
+        "key": "cmd+t cmd+c",
+        "command": "hybridly.php.run-current-test",
+        "when": "editorLangId == php"
+      },
+      {
+        "key": "cmd+t cmd+f",
+        "command": "hybridly.php.run-current-test-file",
+        "when": "editorLangId == php"
+      },
+      {
+        "key": "cmd+t cmd+a",
+        "command": "hybridly.php.run-tests",
+        "when": "editorLangId == php"
+      },
+      {
+        "key": "cmd+t cmd+d",
+        "command": "hybridly.php.run-directory-tests",
+        "when": "editorLangId == php"
+      },
+      {
+        "key": "f9",
+        "command": "hybridly.run-previous-tests"
+      }
+    ],
+    "problemMatchers": [
+      {
+        "name": "pest",
+        "owner": "php",
+        "fileLocation": "absolute",
+        "pattern": [
+          {
+            "regexp": "^  (.*)\\.$",
+            "message": 1
+          },
+          {
+            "regexp": "at (.*):(\\d+)$",
+            "file": 1,
+            "line": 2
+          }
         ]
-    },
-    "scripts": {
-        "build": "tsup src/index.ts",
-        "dev": "nr build --watch",
-        "lint": "eslint .",
-        "vscode:prepublish": "nr build",
-        "publish": "vsce publish --no-dependencies",
-        "pack": "vsce package --no-dependencies",
-        "test": "echo \"No test\"",
-        "typecheck": "tsc --noEmit",
-        "release": "bumpp && nr publish"
-    },
-    "devDependencies": {
-        "@antfu/ni": "^0.21.8",
-        "@innocenzi/eslint-config": "^0.21.0",
-        "@types/node": "^18.18.6",
-        "@types/vscode": "^1.73.0",
-        "@vscode/vsce": "^2.21.1",
-        "bumpp": "^9.2.0",
-        "eslint": "^8.51.0",
-        "esno": "^0.17.0",
-        "pnpm": "^8.9.2",
-        "rimraf": "^5.0.5",
-        "tsup": "^7.2.0",
-        "typescript": "^5.2.2",
-        "vite": "^4.5.0",
-        "vitest": "^0.34.6"
-    }
+      }
+    ],
+    "taskDefinitions": [
+      {
+        "type": "tests"
+      }
+    ]
+  },
+  "scripts": {
+    "build": "tsup src/index.ts",
+    "dev": "nr build --watch",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "vscode:prepublish": "nr build",
+    "publish": "vsce publish --no-dependencies",
+    "pack": "vsce package --no-dependencies",
+    "test": "echo \"No test\"",
+    "typecheck": "tsc --noEmit",
+    "release": "bumpp && nr publish"
+  },
+  "devDependencies": {
+    "@antfu/ni": "^0.23.0",
+    "@innocenzi/eslint-config": "^0.22.4",
+    "@types/node": "^22.5.5",
+    "@types/vscode": "^1.93.0",
+    "@vscode/vsce": "^3.1.0",
+    "bumpp": "^9.5.2",
+    "eslint": "^9.10.0",
+    "esno": "^4.7.0",
+    "pnpm": "^9.10.0",
+    "rimraf": "^5.0.10",
+    "tsup": "^8.3.0",
+    "typescript": "^5.6.2",
+    "vite": "^5.2.14",
+    "vitest": "^2.1.1"
+  }
 }

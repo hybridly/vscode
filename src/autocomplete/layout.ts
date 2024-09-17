@@ -1,5 +1,6 @@
-import { CompletionItemProvider, languages, Range } from 'vscode'
-import { HybridlyContext } from '../context'
+import type { CompletionItemProvider } from 'vscode'
+import { Range, languages } from 'vscode'
+import type { HybridlyContext } from '../context'
 import { log } from '../utils/log'
 
 export async function registerLayoutAutocomplete(context: HybridlyContext) {

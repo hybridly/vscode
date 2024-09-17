@@ -1,6 +1,10 @@
-import { Range, TextDocument } from 'vscode'
+import type { TextDocument } from 'vscode'
+import { Range } from 'vscode'
 
-export type LocatedPattern = { value: string; range: Range }
+export interface LocatedPattern {
+	value: string
+	range: Range
+}
 
 /**
  * Locates a pattern in a document an returns the range of all occurences.

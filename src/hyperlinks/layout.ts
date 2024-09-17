@@ -1,5 +1,6 @@
-import { DocumentLinkProvider, languages, Position, Range } from 'vscode'
-import { HybridlyContext } from '../context'
+import type { DocumentLinkProvider } from 'vscode'
+import { Position, Range, languages } from 'vscode'
+import type { HybridlyContext } from '../context'
 import { locateInDocument } from '../utils/locate-in-document'
 import { log } from '../utils/log'
 

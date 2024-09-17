@@ -1,9 +1,11 @@
 import fs from 'node:fs'
 import path, { resolve } from 'node:path'
 import { execSync } from 'node:child_process'
-import { CompletionItem, CompletionItemKind, ExtensionContext as VscodeExtensionContext, RelativePattern, Uri, workspace } from 'vscode'
+import type { ExtensionContext as VscodeExtensionContext } from 'vscode'
+import { CompletionItem, CompletionItemKind, RelativePattern, Uri, workspace } from 'vscode'
 import { log } from './utils/log'
-import { actionToLink, ControllerAction } from './utils/psr4'
+import type { ControllerAction } from './utils/psr4'
+import { actionToLink } from './utils/psr4'
 import { getPhpPath } from './settings'
 import { hasComposerPackage } from './utils/composer'
 

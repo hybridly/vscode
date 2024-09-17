@@ -1,11 +1,10 @@
-/* eslint-disable brace-style */
-import { ExtensionContext } from '../context'
+import type { ExtensionContext } from '../context'
 import { registerPhpFileCommand } from '../utils/commands'
 import { hasPest } from '../utils/composer'
 import { runTestsTask } from '../utils/tests'
 
 export async function registerRunCurrentTestCommand(context: ExtensionContext) {
-	registerPhpFileCommand(context, 'run-current-test', async({ editor }) => {
+	registerPhpFileCommand(context, 'run-current-test', async ({ editor }) => {
 		if (!hasPest(context.cwd)) {
 			return
 		}

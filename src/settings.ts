@@ -1,5 +1,5 @@
 import { workspace } from 'vscode'
-import { contributes } from '../package.json'
+import type { contributes } from '../package.json'
 
 type SettingName = Replace<keyof typeof contributes.configuration.properties, 'hybridly.', ''>
 type Replace<Original extends string, Pattern extends string, Replacement extends string> = Original extends `${infer Prefix}${Pattern}${infer Suffix}`

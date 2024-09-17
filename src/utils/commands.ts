@@ -1,6 +1,8 @@
-import { TextEditor, commands, window } from 'vscode'
-import { ExtensionContext } from '../context'
-import { PhpFile, resolvePhpFile } from './psr4'
+import type { TextEditor } from 'vscode'
+import { commands, window } from 'vscode'
+import type { ExtensionContext } from '../context'
+import type { PhpFile } from './psr4'
+import { resolvePhpFile } from './psr4'
 import { log } from './log'
 
 interface CommandArguments {
@@ -13,7 +15,7 @@ class CommandError extends Error {}
 function registerCommand(name: string, cb: Function) {
 	log.appendLine(`Registering command [${name}].`)
 
-	return commands.registerCommand(name, async() => {
+	return commands.registerCommand(name, async () => {
 		try {
 			await cb()
 		} catch (error) {
@@ -28,13 +30,13 @@ function registerCommand(name: string, cb: Function) {
 
 export async function registerEditorCommand(context: ExtensionContext, name: string, callback: (editor?: TextEditor) => Promise<void>) {
 	context.extension.subscriptions.push(
-		registerCommand(`hybridly.${name}`, async() => await callback(window.activeTextEditor)),
+		registerCommand(`hybridly.${name}`, async () => await callback(window.activeTextEditor)),
 	)
 }
 
 export async function registerPhpFileCommand(context: ExtensionContext, name: string, callback: (params: CommandArguments) => Promise<void>) {
 	context.extension.subscriptions.push(
-		registerCommand(`hybridly.php.${name}`, async() => await callback(assertPhpFile(context))),
+		registerCommand(`hybridly.php.${name}`, async () => await callback(assertPhpFile(context))),
 	)
 }
 
