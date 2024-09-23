@@ -25,7 +25,7 @@ export interface PhpFile {
 
 export async function getComposerAutoloadPsr4(fromFile: Uri, workspace: Uri): Promise<[string, Autoload['psr-4']]> {
 	// TODO: cache
-	const file = await findFile('composer.json', { startingFrom: dirname(fromFile.fsPath) })
+	const file = await findFile('composer.json', { startingFrom: fromFile.fsPath })
 	if (!file) {
 		return [workspace.fsPath, {}]
 	}
@@ -92,7 +92,7 @@ export async function resolvePhpFile(workspace: Uri, file: Uri): Promise<PhpFile
 }
 
 export async function fqcnToFile(workspace: Uri, fqcn: string): Promise<string> {
-	const [root, psr4] = await getComposerAutoloadPsr4(workspace, workspace)
+	const [_, psr4] = await getComposerAutoloadPsr4(workspace, workspace)
 
 	fqcn = fqcn.replaceAll('\\\\', '\\')
 
