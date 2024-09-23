@@ -1,6 +1,7 @@
 import fs from 'node:fs'
-import path from 'node:path'
+import path, { dirname } from 'node:path'
 import { Uri } from 'vscode'
+import { findFile } from 'pkg-types'
 import { log } from './log'
 
 interface Autoload {
@@ -22,18 +23,26 @@ export interface PhpFile {
 	fqcn: string
 }
 
-export function getComposerAutoloadPsr4(workspace: Uri): Autoload['psr-4'] {
+export async function getComposerAutoloadPsr4(fromFile: Uri, workspace: Uri): Promise<[string, Autoload['psr-4']]> {
 	// TODO: cache
-	const composer = JSON.parse(fs.readFileSync(path.resolve(workspace.fsPath, 'composer.json'), { encoding: 'utf-8' }))
+	const file = await findFile('composer.json', { startingFrom: dirname(fromFile.fsPath) })
+	if (!file) {
+		return [workspace.fsPath, {}]
+	}
 
-	return { ...composer?.autoload?.['psr-4'] ?? {}, ...composer?.['autoload-dev']?.['psr-4'] ?? {} }
+	const composer = JSON.parse(fs.readFileSync(file, { encoding: 'utf-8' }))
+
+	return [
+		dirname(file),
+		{ ...composer?.autoload?.['psr-4'] ?? {}, ...composer?.['autoload-dev']?.['psr-4'] ?? {} },
+	]
 }
 
-export function resolvePhpFile(workspace: Uri, file: Uri): PhpFile | undefined {
+export async function resolvePhpFile(workspace: Uri, file: Uri): Promise<PhpFile | undefined> {
 	log.appendLine(`Resolving ${file.fsPath}`)
-	const psr4 = getComposerAutoloadPsr4(workspace)
+	const [root, psr4] = await getComposerAutoloadPsr4(file, workspace)
 
-	const relativePath = path.relative(workspace.fsPath, file.fsPath)
+	const relativePath = path.relative(root, file.fsPath)
 	const pathParts = relativePath.split(path.sep)
 	const namespaceParts = pathParts.slice(0, -1)
 	const fileName = pathParts.slice(-1)[0]
@@ -46,6 +55,7 @@ export function resolvePhpFile(workspace: Uri, file: Uri): PhpFile | undefined {
 
 	if (!rootNamespace) {
 		log.appendLine(`No root namespace found for ${file.fsPath}`)
+		log.appendLine(JSON.stringify({ root, psr4 }, null, '  '))
 		return
 	}
 
@@ -81,8 +91,8 @@ export function resolvePhpFile(workspace: Uri, file: Uri): PhpFile | undefined {
 	}
 }
 
-export function fqcnToFile(workspace: Uri, fqcn: string): string {
-	const psr4 = getComposerAutoloadPsr4(workspace)
+export async function fqcnToFile(workspace: Uri, fqcn: string): Promise<string> {
+	const [root, psr4] = await getComposerAutoloadPsr4(workspace, workspace)
 
 	fqcn = fqcn.replaceAll('\\\\', '\\')
 
@@ -95,9 +105,9 @@ export function fqcnToFile(workspace: Uri, fqcn: string): string {
 	return `${fqcn.replaceAll('\\', '/')}.php`
 }
 
-export function actionToLink(workspace: Uri, action: string): ControllerAction | undefined {
+export async function actionToLink(workspace: Uri, action: string): Promise<ControllerAction | undefined> {
 	const [fqcn, actionName = '__invoke'] = action.split('@')
-	const file = fqcnToFile(workspace, fqcn)
+	const file = await fqcnToFile(workspace, fqcn)
 	const uri = Uri.joinPath(workspace, file)
 
 	if (!fs.existsSync(uri.fsPath)) {

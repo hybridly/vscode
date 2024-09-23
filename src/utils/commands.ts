@@ -36,11 +36,11 @@ export async function registerEditorCommand(context: ExtensionContext, name: str
 
 export async function registerPhpFileCommand(context: ExtensionContext, name: string, callback: (params: CommandArguments) => Promise<void>) {
 	context.extension.subscriptions.push(
-		registerCommand(`hybridly.php.${name}`, async () => await callback(assertPhpFile(context))),
+		registerCommand(`hybridly.php.${name}`, async () => await callback(await assertPhpFile(context))),
 	)
 }
 
-export function assertPhpFile(context: ExtensionContext): CommandArguments {
+export async function assertPhpFile(context: ExtensionContext): Promise<CommandArguments> {
 	if (!window.activeTextEditor) {
 		throw new CommandError('There is no active editor.')
 	}
@@ -49,7 +49,7 @@ export function assertPhpFile(context: ExtensionContext): CommandArguments {
 		throw new CommandError('You may only insert a namespace when inside a workspace.')
 	}
 
-	const file = resolvePhpFile(context.uri, window.activeTextEditor.document.uri)
+	const file = await resolvePhpFile(context.uri, window.activeTextEditor.document.uri)
 
 	if (!file) {
 		throw new CommandError('Current file could not be resolved as a valid PSR-4 PHP file.')
