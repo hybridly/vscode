@@ -5,7 +5,7 @@
   "version": "0.8.1",
   "private": true,
   "preview": true,
-  "packageManager": "pnpm@9.10.0",
+  "packageManager": "pnpm@9.11.0",
   "description": "Visual Studio Code extension for Hybridly",
   "author": "Enzo Innocenzi <enzo@innocenzi.dev>",
   "license": "MIT",
@@ -37,9 +37,12 @@
     "Other"
   ],
   "main": "./dist/index.js",
-  "icon": "res/icon.png",
+  "icon": "./res/icon.png",
   "files": [
-    "dist"
+    "LICENSE.md",
+    "dist",
+    "package.json",
+    "res"
   ],
   "galleryBanner": {
     "color": "#252525",
@@ -214,25 +217,25 @@
     "vscode:prepublish": "nr build",
     "publish": "vsce publish --no-dependencies",
     "pack": "vsce package --no-dependencies",
-    "test": "echo \"No test\"",
+    "test": "nr pack",
     "typecheck": "tsc --noEmit",
     "release": "bumpp && nr publish"
   },
   "devDependencies": {
     "@antfu/ni": "^0.23.0",
     "@innocenzi/eslint-config": "^0.22.4",
-    "@types/node": "^22.5.5",
-    "@types/vscode": "^1.73.0",
+    "@types/node": "^22.6.0",
+    "@types/vscode": "1.73.0",
     "@vscode/vsce": "^3.1.0",
     "bumpp": "^9.5.2",
-    "eslint": "^9.10.0",
+    "eslint": "^9.11.0",
     "esno": "^4.7.0",
     "pkg-types": "^1.2.0",
-    "pnpm": "^9.10.0",
+    "pnpm": "^9.11.0",
     "rimraf": "^5.0.10",
     "tsup": "^8.3.0",
     "typescript": "^5.6.2",
-    "vite": "^5.2.14",
+    "vite": "^5.4.7",
     "vitest": "^2.1.1"
   }
 }
