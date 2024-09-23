@@ -160,19 +160,20 @@ export async function registerContextUpdater(context: HybridlyContext) {
 	async function updateRoutes() {
 		log.appendLine('Collecting routes...')
 		const routes = JSON.parse(execSync('php artisan route:list --json', { cwd: context.cwd }).toString()) as Route[]
-
-		context.routes = routes.flatMap((route) => {
-			const controller = actionToLink(context.uri, route.action)
+		const result = routes.map(async (route) => {
+			const controller = await actionToLink(context.uri, route.action)
 
 			if (!controller) {
-				return []
+				return false
 			}
 
 			return {
 				...route,
 				controller,
-			}
+			} as Route
 		})
+
+		context.routes = (await Promise.all(result)).filter(Boolean) as Route[]
 
 		log.appendLine(`Collected ${context.routes.length} routes.`)
 	}
