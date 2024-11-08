@@ -16,6 +16,7 @@ export interface ControllerAction {
 }
 
 export interface PhpFile {
+	fullPath: string
 	relativePath: string
 	fileName: string
 	className: string
@@ -83,6 +84,7 @@ export async function resolvePhpFile(workspace: Uri, file: Uri): Promise<PhpFile
 	}, null, 2))
 
 	return {
+		fullPath: file.fsPath,
 		relativePath,
 		fileName,
 		className,

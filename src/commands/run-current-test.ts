@@ -1,27 +1,55 @@
 import type { ExtensionContext } from '../context'
 import { registerPhpFileCommand } from '../utils/commands'
-import { hasPest } from '../utils/composer'
+import { getTestRunner, hasTestRunner } from '../utils/composer'
 import { runTestsTask } from '../utils/tests'
 
 export async function registerRunCurrentTestCommand(context: ExtensionContext) {
 	registerPhpFileCommand(context, 'run-current-test', async ({ editor }) => {
-		if (!hasPest(context.cwd)) {
+		if (!hasTestRunner(context.cwd)) {
 			return
 		}
 
 		let line = editor.selection.active.line
 		let method: string | undefined
+		const testRunner = getTestRunner(context.cwd)
 
-		while (line > 0) {
-			const lineText = editor.document.lineAt(line).text
-			const match = lineText.match(/^\s*(?:it|test)\((.+['"])[,)]/m)
+		if (testRunner === 'pest') {
+			while (line > 0) {
+				const lineText = editor.document.lineAt(line).text
+				const match = lineText.match(/^\s*(?:it|test)\((.+['"])[,)]/m)
 
-			if (match) {
-				method = match[1]
-				break
+				if (match) {
+					method = match[1]
+					break
+				}
+
+				line = line - 1
 			}
+		}
 
-			line = line - 1
+		if (testRunner === 'phpunit') {
+			while (line > 0) {
+				const lineText = editor.document.lineAt(line).text
+				const methodRE = /^\s*(?:public|private|protected)\s+function\s+(test_.+)\s*\(/m
+
+				const testPrefixMatch = lineText.match(methodRE)
+				if (testPrefixMatch) {
+					method = testPrefixMatch[1]
+					break
+				}
+
+				if (lineText.match(/^\s*#\[Test(?:\(\))?\]/m)) {
+					const methodLine = editor.document.lineAt(line + 1).text
+					const methodMatch = methodLine.match(methodRE)
+
+					if (methodMatch) {
+						method = methodMatch[1]
+						break
+					}
+				}
+
+				line = line - 1
+			}
 		}
 
 		const filter = method ? ` --filter ${method}` : ''

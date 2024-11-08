@@ -3,7 +3,8 @@ import path from 'node:path'
 import { window } from 'vscode'
 import { log } from './log'
 
-let hasLoggedPest = false
+let testRunner: TestRunner
+let hasLoggedTestRunner = false
 let hasLoggedComposer = false
 const caches = new Map<string, any>()
 
@@ -34,12 +35,28 @@ export function hasComposerPackage(cwd: string, pkg: string): boolean {
 	return !!getComposer(cwd)?.require?.[pkg] || !!getComposer(cwd)?.['require-dev']?.[pkg]
 }
 
-export function hasPest(cwd: string) {
-	if (!hasComposerPackage(cwd, 'pestphp/pest')) {
-		if (!hasLoggedPest) {
-			log.appendLine('Pest was not found in `composer.json`.')
-			window.showErrorMessage('Pest is not installed in this project.')
-			hasLoggedPest = true
+export type TestRunner = 'pest' | 'phpunit'
+
+export function getTestRunner(cwd: string): TestRunner | undefined {
+	if (testRunner) {
+		return testRunner
+	}
+
+	if (hasComposerPackage(cwd, 'pestphp/pest')) {
+		return testRunner = 'pest'
+	}
+
+	if (hasComposerPackage(cwd, 'phpunit/phpunit')) {
+		return testRunner = 'phpunit'
+	}
+}
+
+export function hasTestRunner(cwd: string) {
+	if (!getTestRunner(cwd)) {
+		if (!hasLoggedTestRunner) {
+			log.appendLine('Compatible test runner not found in `composer.json`.')
+			window.showErrorMessage('A compatible test runner is not installed in this project.')
+			hasLoggedTestRunner = true
 		}
 
 		return false

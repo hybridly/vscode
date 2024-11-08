@@ -1,6 +1,7 @@
 import path from 'node:path'
 import { ShellExecution, Task, TaskScope, commands, tasks, window } from 'vscode'
 import { getSetting } from '../settings'
+import { getTestRunner } from './composer'
 
 interface LatestTestContext {
 	cwd: string
@@ -23,24 +24,27 @@ export async function runTestsTask(cwd: string, args: string = '') {
 	const retries = getSetting('test.retry')
 	const bail = getSetting('test.bail')
 	const settingArgs = getSetting('test.arguments')
+	const testRunner = getTestRunner(cwd)
 
-	if (testDirectory && !args.includes('--test-directory')) {
-		args += ` --test-directory=${testDirectory} ${args}`
-	}
+	if (testRunner === 'pest') {
+		if (testDirectory && !args.includes('--test-directory')) {
+			args += ` --test-directory=${testDirectory} ${args}`
+		}
 
-	if (retries && !args.includes('--retry')) {
-		args += ' --retry'
-	}
+		if (retries && !args.includes('--retry')) {
+			args += ' --retry'
+		}
 
-	if (bail && !args.includes('--bail')) {
-		args += ' --bail'
+		if (bail && !args.includes('--bail')) {
+			args += ' --bail'
+		}
 	}
 
 	if (settingArgs) {
 		args += ` ${settingArgs}`
 	}
 
-	const binaryName = process.platform === 'win32' ? 'pest.bat' : 'pest'
+	const binaryName = `${testRunner}${process.platform === 'win32' ? '.bat' : ''}`
 	const binaryPath = path.join(cwd, 'vendor', 'bin', binaryName)
 	const command = `${binaryPath} ${args}`
 
