@@ -90,10 +90,15 @@ export async function loadHybridlyContext(extension: ExtensionContext): Promise<
 		return false
 	}
 
-	const pkg = JSON.parse(fs.readFileSync(path.resolve(extension.cwd, 'package.json'), { encoding: 'utf-8' }))
-	const deps = { ...pkg.dependencies, ...pkg.devDependencies }
-	if (!deps.hybridly) {
-		log.appendLine('Hybridly was not found in `package.json`.')
+	try {
+		const pkg = JSON.parse(fs.readFileSync(path.resolve(extension.cwd, 'package.json'), { encoding: 'utf-8' }))
+		const deps = { ...pkg.dependencies, ...pkg.devDependencies }
+		if (!deps.hybridly) {
+			log.appendLine('Hybridly was not found in `package.json`.')
+			return false
+		}
+	} catch (error) {
+		log.appendLine('Could not find `package.json`.')
 		return false
 	}
 
