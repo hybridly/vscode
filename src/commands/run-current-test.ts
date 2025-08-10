@@ -30,9 +30,8 @@ export async function registerRunCurrentTestCommand(context: ExtensionContext) {
 		if (testRunner === 'phpunit') {
 			while (line > 0) {
 				const lineText = editor.document.lineAt(line).text
-				const methodRE = /^\s*(?:public|private|protected)\s+function\s+(test_.+)\s*\(/m
 
-				const testPrefixMatch = lineText.match(methodRE)
+				const testPrefixMatch = lineText.match(/^\s*(?:public|private|protected)\s+function\s+(test_.+)\s*\(/m)
 				if (testPrefixMatch) {
 					method = testPrefixMatch[1]
 					break
@@ -40,7 +39,7 @@ export async function registerRunCurrentTestCommand(context: ExtensionContext) {
 
 				if (lineText.match(/^\s*#\[Test(?:\(\))?\]/m)) {
 					const methodLine = editor.document.lineAt(line + 1).text
-					const methodMatch = methodLine.match(methodRE)
+					const methodMatch = methodLine.match(/^\s*(?:public|private|protected)\s+function\s+(.+)\s*\(/m)
 
 					if (methodMatch) {
 						method = methodMatch[1]
