@@ -2,7 +2,7 @@
   "publisher": "innocenzi",
   "name": "vscode-hybridly",
   "displayName": "Hybridly",
-  "version": "0.9.1",
+  "version": "0.10.0",
   "private": true,
   "preview": true,
   "packageManager": "pnpm@9.11.0",
