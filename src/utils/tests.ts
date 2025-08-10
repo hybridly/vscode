@@ -21,6 +21,7 @@ export async function runPreviousTestTask() {
 
 export async function runTestsTask(cwd: string, args: string = '') {
 	const testDirectory = getSetting('test.directory')
+	const dox = getSetting('test.dox')
 	const retries = getSetting('test.retry')
 	const bail = getSetting('test.bail')
 	const settingArgs = getSetting('test.arguments')
@@ -40,7 +41,17 @@ export async function runTestsTask(cwd: string, args: string = '') {
 		}
 	}
 
-	if (settingArgs) {
+  if (testRunner === 'phpunit') {
+    if (dox && !args.includes('--testdox')) {
+      args += ' --testdox'
+    }
+
+		if (bail && !args.includes('--stop-on-failure --stop-on-error')) {
+			args += ' --stop-on-failure --stop-on-error'
+		}
+  }
+
+	if (settingArgs && !args.includes(settingArgs)) {
 		args += ` ${settingArgs}`
 	}
 

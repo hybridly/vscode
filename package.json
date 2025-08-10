@@ -109,7 +109,12 @@
         "hybridly.test.bail": {
           "type": "boolean",
           "default": true,
-          "description": "Stop execution upon first non-passing test. Supports Pest only."
+          "description": "Stop execution upon first non-passing test."
+        },
+        "hybridly.test.dox": {
+          "type": "boolean",
+          "default": true,
+          "description": "Shows detailed testing information. Supports PHPUnit only."
         },
         "hybridly.test.arguments": {
           "type": "string",
