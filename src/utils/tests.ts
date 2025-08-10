@@ -25,6 +25,8 @@ export async function runTestsTask(cwd: string, args: string = '') {
 	const retries = getSetting('test.retry')
 	const bail = getSetting('test.bail')
 	const settingArgs = getSetting('test.arguments')
+	const pestArgs = getSetting('test.arguments.pest')
+	const phpunitArgs = getSetting('test.arguments.phpunit')
 	const testRunner = getTestRunner(cwd)
 
 	if (testRunner === 'pest') {
@@ -39,6 +41,10 @@ export async function runTestsTask(cwd: string, args: string = '') {
 		if (bail && !args.includes('--bail')) {
 			args += ' --bail'
 		}
+
+    if (pestArgs) {
+      args += ` ${pestArgs}`
+    }
 	}
 
   if (testRunner === 'phpunit') {
@@ -49,6 +55,10 @@ export async function runTestsTask(cwd: string, args: string = '') {
 		if (bail && !args.includes('--stop-on-failure --stop-on-error')) {
 			args += ' --stop-on-failure --stop-on-error'
 		}
+
+    if (phpunitArgs) {
+      args += ` ${phpunitArgs}`
+    }
   }
 
 	if (settingArgs && !args.includes(settingArgs)) {

@@ -120,6 +120,16 @@
           "type": "string",
           "default": "",
           "description": "Add arbitrary arguments to all test commands."
+        },
+        "hybridly.test.arguments.phpunit": {
+          "type": "string",
+          "default": "",
+          "description": "Add arbitrary arguments to all PHPUnit test commands."
+        },
+        "hybridly.test.arguments.pest": {
+          "type": "string",
+          "default": "",
+          "description": "Add arbitrary arguments to all Pest test commands."
         }
       }
     },
